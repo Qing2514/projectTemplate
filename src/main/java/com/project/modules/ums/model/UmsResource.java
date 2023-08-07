@@ -3,6 +3,7 @@ package com.project.modules.ums.model;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.project.common.api.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -20,12 +21,7 @@ import java.util.Date;
 @Data
 @TableName("ums_resource")
 @ApiModel(value="UmsResource对象", description="后台资源表")
-public class UmsResource implements Serializable {
-
-    private static final long serialVersionUID=1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+public class UmsResource extends BaseModel {
 
     @ApiModelProperty(value = "资源名称")
     private String name;
@@ -38,20 +34,5 @@ public class UmsResource implements Serializable {
 
     @ApiModelProperty(value = "资源分类ID")
     private Long categoryId;
-
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createBy;
-
-    @ApiModelProperty(value = "修改时间")
-    private Date updateTime;
-
-    @ApiModelProperty(value = "修改用户")
-    private String updateBy;
-
-    @ApiModelProperty(value = "逻辑删除标识：0->否；1->是")
-    private Integer deleted;
 
 }

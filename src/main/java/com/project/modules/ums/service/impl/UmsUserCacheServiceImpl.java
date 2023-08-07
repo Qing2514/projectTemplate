@@ -4,12 +4,13 @@ import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.project.common.service.RedisService;
 import com.project.modules.ums.mapper.UmsUserMapper;
+import com.project.modules.ums.model.UmsResource;
 import com.project.modules.ums.model.UmsUser;
 import com.project.modules.ums.model.UmsUserRoleRelation;
-import com.project.modules.ums.model.UmsResource;
 import com.project.modules.ums.service.UmsUserCacheService;
 import com.project.modules.ums.service.UmsUserRoleRelationService;
 import com.project.modules.ums.service.UmsUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,10 @@ import java.util.stream.Collectors;
 
 /**
  * 后台用户缓存管理Service实现类
+ *
  * @author Qing2514
  */
+@Slf4j
 @Service
 public class UmsUserCacheServiceImpl implements UmsUserCacheService {
 

@@ -7,17 +7,18 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.project.modules.ums.mapper.UmsResourceMapper;
 import com.project.modules.ums.model.UmsResource;
-import com.project.modules.ums.service.UmsUserCacheService;
 import com.project.modules.ums.service.UmsResourceService;
+import com.project.modules.ums.service.UmsUserCacheService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * 后台资源管理Service实现类
+ *
  * @author Qing2514
  */
+@Slf4j
 @Service
 public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper,UmsResource>implements UmsResourceService {
 
@@ -26,7 +27,6 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper,UmsRes
 
     @Override
     public boolean create(UmsResource umsResource) {
-        umsResource.setCreateTime(new Date());
         return save(umsResource);
     }
 

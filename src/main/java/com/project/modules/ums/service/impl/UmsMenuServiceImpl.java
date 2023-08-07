@@ -7,23 +7,24 @@ import com.project.modules.ums.dto.UmsMenuNode;
 import com.project.modules.ums.mapper.UmsMenuMapper;
 import com.project.modules.ums.model.UmsMenu;
 import com.project.modules.ums.service.UmsMenuService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * 后台菜单管理Service实现类
+ *
  * @author Qing2514
  */
+@Slf4j
 @Service
 public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> implements UmsMenuService {
 
     @Override
     public boolean create(UmsMenu umsMenu) {
-        umsMenu.setCreateTime(new Date());
         updateLevel(umsMenu);
         return save(umsMenu);
     }
@@ -64,10 +65,9 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     @Override
     public List<UmsMenuNode> treeList() {
         List<UmsMenu> menuList = list();
-        List<UmsMenuNode> result = menuList.stream()
+        return menuList.stream()
                 .filter(menu -> menu.getParentId().equals(0L))
                 .map(menu -> covertMenuNode(menu, menuList)).collect(Collectors.toList());
-        return result;
     }
 
     @Override

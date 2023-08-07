@@ -11,18 +11,17 @@ import com.project.common.exception.Asserts;
 import com.project.domain.AdminUserDetails;
 import com.project.modules.ums.dto.UmsUserParam;
 import com.project.modules.ums.dto.UpdatePasswordParam;
-import com.project.modules.ums.mapper.UmsUserLoginLogMapper;
-import com.project.modules.ums.mapper.UmsUserMapper;
 import com.project.modules.ums.mapper.UmsResourceMapper;
 import com.project.modules.ums.mapper.UmsRoleMapper;
+import com.project.modules.ums.mapper.UmsUserLoginLogMapper;
+import com.project.modules.ums.mapper.UmsUserMapper;
 import com.project.modules.ums.model.*;
 import com.project.modules.ums.service.UmsUserCacheService;
 import com.project.modules.ums.service.UmsUserRoleRelationService;
 import com.project.modules.ums.service.UmsUserService;
 import com.project.security.util.JwtTokenUtil;
 import com.project.security.util.SpringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,12 +43,12 @@ import java.util.Objects;
 
 /**
  * 后台管理员管理Service实现类
+ *
  * @author Qing2514
  */
+@Slf4j
 @Service
 public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implements UmsUserService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UmsUserServiceImpl.class);
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -90,9 +89,7 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     public UmsUser register(UmsUserParam umsUserParam) {
         UmsUser umsUser = new UmsUser();
         BeanUtils.copyProperties(umsUserParam, umsUser);
-        umsUser.setCreateTime(new Date());
-        umsUser.setStatus(1);
-        //查询是否有相同用户名的用户
+        // 查询是否有相同用户名的用户
         QueryWrapper<UmsUser> wrapper = new QueryWrapper<>();
         wrapper.lambda().eq(UmsUser::getUsername, umsUser.getUsername());
         List<UmsUser> umsUserList = list(wrapper);
@@ -125,7 +122,7 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
             updateLoginTimeByUsername(username);
             insertLoginLog(username);
         } catch (AuthenticationException e) {
-            LOGGER.warn("登录异常:{}", e.getMessage());
+            log.warn("登录异常:{}", e.getMessage());
         }
         return token;
     }
@@ -145,7 +142,6 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
                 .userId(user.getId())
                 .ip(request.getRemoteAddr())
                 // .userAgent(request.getHeader("User-Agent"))
-                .createTime(new Date())
                 .build();
         loginLogMapper.insert(loginLog);
     }

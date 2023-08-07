@@ -9,21 +9,23 @@ import com.project.modules.ums.mapper.UmsMenuMapper;
 import com.project.modules.ums.mapper.UmsResourceMapper;
 import com.project.modules.ums.mapper.UmsRoleMapper;
 import com.project.modules.ums.model.*;
-import com.project.modules.ums.service.UmsUserCacheService;
 import com.project.modules.ums.service.UmsRoleMenuRelationService;
 import com.project.modules.ums.service.UmsRoleResourceRelationService;
 import com.project.modules.ums.service.UmsRoleService;
+import com.project.modules.ums.service.UmsUserCacheService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
  * 后台角色管理Service实现类
+ *
  * @author Qing2514
  */
+@Slf4j
 @Service
 public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>implements UmsRoleService {
 
@@ -44,7 +46,6 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>imple
 
     @Override
     public boolean create(UmsRole role) {
-        role.setCreateTime(new Date());
         role.setUserCount(0);
         return save(role);
     }

@@ -1,13 +1,11 @@
 package com.project.modules.ums.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.project.common.api.BaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -20,12 +18,7 @@ import java.util.Date;
 @Data
 @TableName("ums_user")
 @ApiModel(value = "UmsUser对象", description = "后台用户表")
-public class UmsUser implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+public class UmsUser extends BaseModel {
 
     @ApiModelProperty(value = "用户名")
     private String username;
@@ -51,22 +44,7 @@ public class UmsUser implements Serializable {
     @ApiModelProperty(value = "最后登录时间")
     private Date loginTime;
 
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createBy;
-
-    @ApiModelProperty(value = "修改时间")
-    private Date updateTime;
-
-    @ApiModelProperty(value = "修改用户")
-    private String updateBy;
-
     @ApiModelProperty(value = "帐号启用状态：0->禁用；1->启用")
-    private Integer status;
-
-    @ApiModelProperty(value = "逻辑删除标识：0->否；1->是")
-    private Integer deleted;
+    private Integer status = 1;
 
 }
