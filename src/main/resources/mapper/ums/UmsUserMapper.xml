@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.modules.ums.mapper.UmsUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.project.modules.ums.model.UmsUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="icon" property="icon"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="note" property="note"/>
+        <result column="login_time" property="loginTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="status" property="status"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <select id="getUserIdList" resultType="java.lang.Long">
+        SELECT DISTINCT ar.user_id
+        FROM ums_role_resource_relation rr
+                 LEFT JOIN ums_user_role_relation ar ON rr.role_id = ar.role_id
+        WHERE rr.resource_id = #{resourceId}
+    </select>
+
+</mapper>
