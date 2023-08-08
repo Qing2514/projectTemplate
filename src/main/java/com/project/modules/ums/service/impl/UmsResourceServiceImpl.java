@@ -14,27 +14,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 后台资源管理Service实现类
+ * 后台资源管理 Service 实现类
  *
  * @author Qing2514
  */
 @Slf4j
 @Service
-public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper,UmsResource>implements UmsResourceService {
+public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsResource> implements UmsResourceService {
 
     @Autowired
     private UmsUserCacheService userCacheService;
 
     @Override
-    public boolean create(UmsResource umsResource) {
-        return save(umsResource);
+    public Page<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,
+                                  Integer pageNum) {
+        Page<UmsResource> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UmsResource> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<UmsResource> lambda = wrapper.lambda();
+        if (categoryId != null) {
+            lambda.eq(UmsResource::getCategoryId, categoryId);
+        }
+        if (StrUtil.isNotEmpty(nameKeyword)) {
+            lambda.like(UmsResource::getName, nameKeyword);
+        }
+        if (StrUtil.isNotEmpty(urlKeyword)) {
+            lambda.like(UmsResource::getUrl, urlKeyword);
+        }
+        return page(page, wrapper);
     }
 
     @Override
-    public boolean update(Long id, UmsResource umsResource) {
-        umsResource.setId(id);
+    public boolean update(UmsResource umsResource) {
         boolean success = updateById(umsResource);
-        userCacheService.delResourceListByResource(id);
+        userCacheService.delResourceListByResource(umsResource.getId());
         return success;
     }
 
@@ -43,23 +55,6 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper,UmsRes
         boolean success = removeById(id);
         userCacheService.delResourceListByResource(id);
         return success;
-    }
-
-    @Override
-    public Page<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum) {
-        Page<UmsResource> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<UmsResource> wrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<UmsResource> lambda = wrapper.lambda();
-        if(categoryId!=null){
-            lambda.eq(UmsResource::getCategoryId,categoryId);
-        }
-        if(StrUtil.isNotEmpty(nameKeyword)){
-            lambda.like(UmsResource::getName,nameKeyword);
-        }
-        if(StrUtil.isNotEmpty(urlKeyword)){
-            lambda.like(UmsResource::getUrl,urlKeyword);
-        }
-        return page(page,wrapper);
     }
 
 }

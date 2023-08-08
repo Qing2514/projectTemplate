@@ -63,9 +63,9 @@ public class UmsMenuController {
     }
 
     @ApiOperation("修改菜单")
-    @PutMapping(value = "/{id}")
-    public CommonResult<Object> update(@PathVariable Long id, @RequestBody UmsMenu umsMenu) {
-        boolean success = menuService.update(id, umsMenu);
+    @PutMapping(value = "")
+    public CommonResult<Object> update(@RequestBody UmsMenu umsMenu) {
+        boolean success = menuService.update(umsMenu);
         if (success) {
             return CommonResult.success(null);
         } else {

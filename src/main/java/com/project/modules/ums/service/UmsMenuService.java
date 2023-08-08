@@ -43,11 +43,10 @@ public interface UmsMenuService extends IService<UmsMenu> {
     /**
      * 修改后台菜单
      *
-     * @param id      菜单ID
      * @param umsMenu 菜单
      * @return 成功标志
      */
-    boolean update(Long id, UmsMenu umsMenu);
+    boolean update(UmsMenu umsMenu);
 
     /**
      * 修改菜单显示状态

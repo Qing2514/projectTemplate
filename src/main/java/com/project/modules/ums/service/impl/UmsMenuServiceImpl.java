@@ -46,8 +46,7 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     }
 
     @Override
-    public boolean update(Long id, UmsMenu umsMenu) {
-        umsMenu.setId(id);
+    public boolean update(UmsMenu umsMenu) {
         updateLevel(umsMenu);
         return updateById(umsMenu);
     }
