@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 /**
  * 修改用户名密码参数
+ *
  * @author Qing2514
  */
 @Data

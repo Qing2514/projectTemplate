@@ -70,12 +70,12 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>imple
 
     @Override
     public List<UmsMenu> getMenuList(Long userId) {
-        return menuMapper.getMenuList(userId);
+        return menuMapper.getList(userId);
     }
 
     @Override
     public List<UmsMenu> listMenu(Long roleId) {
-        return menuMapper.getMenuListByRoleId(roleId);
+        return menuMapper.getListByRoleId(roleId);
     }
 
     @Override

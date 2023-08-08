@@ -33,4 +33,7 @@ public class UmsRole extends BaseModel {
     @ApiModelProperty(value = "后台用户数量")
     private Integer userCount = 0;
 
+    @ApiModelProperty(value = "帐号启用状态：0->禁用；1->启用")
+    private Integer status = 1;
+
 }

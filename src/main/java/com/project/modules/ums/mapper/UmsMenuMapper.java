@@ -7,9 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 后台菜单表 Mapper 接口
- * </p>
  *
  * @author Qing2514
  */
@@ -17,16 +15,18 @@ public interface UmsMenuMapper extends BaseMapper<UmsMenu> {
 
     /**
      * 根据后台用户ID获取菜单
+     *
      * @param userId 用户ID
-     * @return List<UmsMenu>
+     * @return 菜单列表
      */
-    List<UmsMenu> getMenuList(@Param("userId") Long userId);
+    List<UmsMenu> getList(@Param("userId") Long userId);
 
     /**
      * 根据角色ID获取菜单
+     *
      * @param roleId 角色ID
-     * @return List<UmsMenu>
+     * @return 菜单列表
      */
-    List<UmsMenu> getMenuListByRoleId(@Param("roleId") Long roleId);
+    List<UmsMenu> getListByRoleId(@Param("roleId") Long roleId);
 
 }

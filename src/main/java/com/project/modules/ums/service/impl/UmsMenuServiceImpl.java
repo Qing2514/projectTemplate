@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 后台菜单管理Service实现类
+ * 后台菜单管理 Service 实现类
  *
  * @author Qing2514
  */
@@ -24,9 +24,40 @@ import java.util.stream.Collectors;
 public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> implements UmsMenuService {
 
     @Override
+    public Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum) {
+        Page<UmsMenu> page = new Page<>(pageNum,pageSize);
+        QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
+        wrapper.lambda().eq(UmsMenu::getParentId,parentId);
+        return page(page,wrapper);
+    }
+
+    @Override
+    public List<UmsMenuNode> treeList() {
+        List<UmsMenu> menuList = list();
+        return menuList.stream()
+                .filter(menu -> menu.getParentId().equals(0L))
+                .map(menu -> covertMenuNode(menu, menuList)).collect(Collectors.toList());
+    }
+
+    @Override
     public boolean create(UmsMenu umsMenu) {
         updateLevel(umsMenu);
         return save(umsMenu);
+    }
+
+    @Override
+    public boolean update(Long id, UmsMenu umsMenu) {
+        umsMenu.setId(id);
+        updateLevel(umsMenu);
+        return updateById(umsMenu);
+    }
+
+    @Override
+    public boolean updateHidden(Long id, Integer hidden) {
+        UmsMenu umsMenu = new UmsMenu();
+        umsMenu.setId(id);
+        umsMenu.setHidden(hidden);
+        return updateById(umsMenu);
     }
 
     /**
@@ -47,39 +78,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         }
     }
 
-    @Override
-    public boolean update(Long id, UmsMenu umsMenu) {
-        umsMenu.setId(id);
-        updateLevel(umsMenu);
-        return updateById(umsMenu);
-    }
-
-    @Override
-    public Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum) {
-        Page<UmsMenu> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsMenu::getParentId,parentId);
-        return page(page,wrapper);
-    }
-
-    @Override
-    public List<UmsMenuNode> treeList() {
-        List<UmsMenu> menuList = list();
-        return menuList.stream()
-                .filter(menu -> menu.getParentId().equals(0L))
-                .map(menu -> covertMenuNode(menu, menuList)).collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean updateHidden(Long id, Integer hidden) {
-        UmsMenu umsMenu = new UmsMenu();
-        umsMenu.setId(id);
-        umsMenu.setHidden(hidden);
-        return updateById(umsMenu);
-    }
-
     /**
-     * 将UmsMenu转化为UmsMenuNode并设置children属性
+     * 将 UmsMenu 转化为 UmsMenuNode 并设置 children 属性
      */
     private UmsMenuNode covertMenuNode(UmsMenu menu, List<UmsMenu> menuList) {
         UmsMenuNode node = new UmsMenuNode();
