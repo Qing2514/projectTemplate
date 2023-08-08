@@ -31,7 +31,7 @@ public class UmsResourceController {
     @Autowired
     private DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
 
-    @ApiOperation("根据ID获取资源")
+    @ApiOperation("根据ID查询资源")
     @GetMapping(value = "/{id}")
     public CommonResult<UmsResource> getById(@PathVariable Long id) {
         UmsResource umsResource = resourceService.getById(id);
