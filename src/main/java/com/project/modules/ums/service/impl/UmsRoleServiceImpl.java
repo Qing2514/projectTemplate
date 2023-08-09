@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.project.modules.ums.mapper.UmsMenuMapper;
-import com.project.modules.ums.mapper.UmsResourceMapper;
 import com.project.modules.ums.mapper.UmsRoleMapper;
-import com.project.modules.ums.model.*;
+import com.project.modules.ums.model.UmsRole;
+import com.project.modules.ums.model.UmsRoleMenuRelation;
+import com.project.modules.ums.model.UmsRoleResourceRelation;
 import com.project.modules.ums.service.UmsRoleMenuRelationService;
 import com.project.modules.ums.service.UmsRoleResourceRelationService;
 import com.project.modules.ums.service.UmsRoleService;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 后台角色管理Service实现类
+ * 后台角色管理 Service 实现类
  *
  * @author Qing2514
  */
 @Slf4j
 @Service
-public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>implements UmsRoleService {
+public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> implements UmsRoleService {
 
     @Autowired
     private UmsUserCacheService userCacheService;
@@ -38,56 +38,29 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>imple
     @Autowired
     private UmsRoleResourceRelationService roleResourceRelationService;
 
-    @Autowired
-    private UmsMenuMapper menuMapper;
-
-    @Autowired
-    private UmsResourceMapper resourceMapper;
-
     @Override
-    public boolean create(UmsRole role) {
-        role.setUserCount(0);
-        return save(role);
+    public Page<UmsRole> getPage(String keyword, Integer pageSize, Integer pageNum) {
+        Page<UmsRole> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
+        LambdaQueryWrapper<UmsRole> lambda = wrapper.lambda();
+        if (StrUtil.isNotEmpty(keyword)) {
+            lambda.like(UmsRole::getName, keyword);
+        }
+        return page(page, wrapper);
     }
 
     @Override
-    public boolean delete(List<Long> ids) {
+    public boolean deleteBatch(List<Long> ids) {
         boolean success = removeByIds(ids);
         userCacheService.delResourceListByRoleIds(ids);
         return success;
     }
 
     @Override
-    public Page<UmsRole> list(String keyword, Integer pageSize, Integer pageNum) {
-        Page<UmsRole> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<UmsRole> lambda = wrapper.lambda();
-        if(StrUtil.isNotEmpty(keyword)){
-            lambda.like(UmsRole::getName,keyword);
-        }
-        return page(page,wrapper);
-    }
-
-    @Override
-    public List<UmsMenu> getMenuList(Long userId) {
-        return menuMapper.getList(userId);
-    }
-
-    @Override
-    public List<UmsMenu> listMenu(Long roleId) {
-        return menuMapper.getListByRoleId(roleId);
-    }
-
-    @Override
-    public List<UmsResource> listResource(Long roleId) {
-        return resourceMapper.getResourceListByRoleId(roleId);
-    }
-
-    @Override
     public int allocMenu(Long roleId, List<Long> menuIds) {
         //先删除原有关系
         QueryWrapper<UmsRoleMenuRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsRoleMenuRelation::getRoleId,roleId);
+        wrapper.lambda().eq(UmsRoleMenuRelation::getRoleId, roleId);
         roleMenuRelationService.remove(wrapper);
         //批量插入新关系
         List<UmsRoleMenuRelation> relationList = new ArrayList<>();
@@ -105,7 +78,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>imple
     public int allocResource(Long roleId, List<Long> resourceIds) {
         //先删除原有关系
         QueryWrapper<UmsRoleResourceRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsRoleResourceRelation::getRoleId,roleId);
+        wrapper.lambda().eq(UmsRoleResourceRelation::getRoleId, roleId);
         roleResourceRelationService.remove(wrapper);
         //批量插入新关系
         List<UmsRoleResourceRelation> relationList = new ArrayList<>();

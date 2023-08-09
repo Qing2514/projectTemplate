@@ -18,7 +18,7 @@
         <result column="deleted" property="deleted"/>
     </resultMap>
 
-    <select id="getList" resultType="com.project.modules.ums.model.UmsMenu">
+    <select id="getByUserId" resultType="com.project.modules.ums.model.UmsMenu">
         SELECT m.*
         FROM ums_user_role_relation arr
                  LEFT JOIN ums_role r ON arr.role_id = r.id
@@ -29,7 +29,7 @@
         GROUP BY m.id
     </select>
 
-    <select id="getListByRoleId" resultType="com.project.modules.ums.model.UmsMenu">
+    <select id="getByRoleId" resultType="com.project.modules.ums.model.UmsMenu">
         SELECT m.*
         FROM ums_role_menu_relation rmr
                  LEFT JOIN ums_menu m ON rmr.menu_id = m.id

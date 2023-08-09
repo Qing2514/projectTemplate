@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 后台资源管理 Service 实现类
  *
@@ -24,6 +26,11 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsRe
 
     @Autowired
     private UmsUserCacheService userCacheService;
+
+    @Override
+    public List<UmsResource> getByRoleId(Long roleId) {
+        return getBaseMapper().getByRoleId(roleId);
+    }
 
     @Override
     public Page<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,

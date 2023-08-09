@@ -24,6 +24,16 @@ import java.util.stream.Collectors;
 public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> implements UmsMenuService {
 
     @Override
+    public List<UmsMenu> getByUserId(Long userId) {
+        return getBaseMapper().getByUserId(userId);
+    }
+
+    @Override
+    public List<UmsMenu> getByRoleId(Long roleId) {
+        return getBaseMapper().getByRoleId(roleId);
+    }
+
+    @Override
     public Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum) {
         Page<UmsMenu> page = new Page<>(pageNum,pageSize);
         QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();

@@ -7,26 +7,26 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 后台资源表 Mapper 接口
- * </p>
  *
  * @author Qing2514
  */
 public interface UmsResourceMapper extends BaseMapper<UmsResource> {
 
     /**
-     * 获取用户所有可访问资源
+     * 根据用户ID查询用户可访问资源列表
+     *
      * @param userId 用户ID
-     * @return List<UmsResource>
+     * @return 资源列表
      */
     List<UmsResource> getResourceList(@Param("userId") Long userId);
 
     /**
-     * 根据角色ID获取资源
+     * 根据角色ID查询资源
+     *
      * @param roleId 角色ID
-     * @return List<UmsResource>
+     * @return 资源列表
      */
-    List<UmsResource> getResourceListByRoleId(@Param("roleId") Long roleId);
+    List<UmsResource> getByRoleId(@Param("roleId") Long roleId);
 
 }

@@ -9,9 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * <p>
  * 后台用户表
- * </p>
  *
  * @author Qing2514
  */

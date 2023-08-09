@@ -226,7 +226,7 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
 
     @Override
     public List<UmsRole> getRoleList(Long userId) {
-        return roleMapper.getRoleList(userId);
+        return roleMapper.getByUserId(userId);
     }
 
     @Override

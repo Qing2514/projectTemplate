@@ -7,19 +7,18 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * <p>
  * 后台用户角色表 Mapper 接口
- * </p>
  *
  * @author Qing2514
  */
 public interface UmsRoleMapper extends BaseMapper<UmsRole> {
 
     /**
-     * 获取用户所有角色
+     * 根据用户ID查询用户所有角色
+     *
      * @param userId 用户ID
-     * @return List<UmsRole>
+     * @return 角色列表
      */
-    List<UmsRole> getRoleList(@Param("userId") Long userId);
+    List<UmsRole> getByUserId(@Param("userId") Long userId);
 
 }

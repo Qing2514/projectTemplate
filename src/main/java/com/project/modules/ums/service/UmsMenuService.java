@@ -16,7 +16,23 @@ import java.util.List;
 public interface UmsMenuService extends IService<UmsMenu> {
 
     /**
-     * 分页查询后台菜单
+     * 根据用户ID查询菜单列表
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    List<UmsMenu> getByUserId(Long userId);
+
+    /**
+     * 根据角色ID查询菜单列表
+     *
+     * @param roleId 角色ID
+     * @return 菜单列表
+     */
+    List<UmsMenu> getByRoleId(Long roleId);
+
+    /**
+     * 分页查询菜单列表
      *
      * @param parentId 父级菜单ID
      * @param pageSize 页大小
@@ -26,14 +42,14 @@ public interface UmsMenuService extends IService<UmsMenu> {
     Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum);
 
     /**
-     * 树形结构返回所有菜单列表
+     * 查询树形结构菜单列表
      *
      * @return 菜单节点列表
      */
     List<UmsMenuNode> treeList();
 
     /**
-     * 创建后台菜单
+     * 添加菜单
      *
      * @param umsMenu 菜单
      * @return 成功标志
@@ -41,7 +57,7 @@ public interface UmsMenuService extends IService<UmsMenu> {
     boolean create(UmsMenu umsMenu);
 
     /**
-     * 修改后台菜单
+     * 修改菜单
      *
      * @param umsMenu 菜单
      * @return 成功标志

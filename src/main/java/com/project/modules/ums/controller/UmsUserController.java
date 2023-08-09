@@ -9,7 +9,7 @@ import com.project.modules.ums.dto.UmsUserParam;
 import com.project.modules.ums.dto.UpdatePasswordParam;
 import com.project.modules.ums.model.UmsRole;
 import com.project.modules.ums.model.UmsUser;
-import com.project.modules.ums.service.UmsRoleService;
+import com.project.modules.ums.service.UmsMenuService;
 import com.project.modules.ums.service.UmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +47,7 @@ public class UmsUserController {
     private UmsUserService userService;
 
     @Autowired
-    private UmsRoleService roleService;
+    private UmsMenuService menuService;
 
     @ApiOperation(value = "用户注册")
     @PostMapping(value = "/register")
@@ -96,7 +96,7 @@ public class UmsUserController {
         UmsUser umsUser = userService.getUserByUsername(username);
         Map<String, Object> data = new HashMap<>();
         data.put("username", umsUser.getUsername());
-        data.put("menus", roleService.getMenuList(umsUser.getId()));
+        data.put("menus", menuService.getByUserId(umsUser.getId()));
         data.put("icon", umsUser.getIcon());
         List<UmsRole> roleList = userService.getRoleList(umsUser.getId());
         if (CollUtil.isNotEmpty(roleList)) {
