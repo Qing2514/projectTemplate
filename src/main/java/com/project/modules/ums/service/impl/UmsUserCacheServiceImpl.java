@@ -1,9 +1,8 @@
 package com.project.modules.ums.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.project.common.service.RedisService;
-import com.project.modules.ums.mapper.UmsUserMapper;
 import com.project.modules.ums.model.UmsResource;
 import com.project.modules.ums.model.UmsUser;
 import com.project.modules.ums.model.UmsUserRoleRelation;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 后台用户缓存管理Service实现类
+ * 后台用户缓存管理 Service 实现类
  *
  * @author Qing2514
  */
@@ -28,13 +27,10 @@ import java.util.stream.Collectors;
 public class UmsUserCacheServiceImpl implements UmsUserCacheService {
 
     @Autowired
-    private UmsUserService userService;
-
-    @Autowired
     private RedisService redisService;
 
     @Autowired
-    private UmsUserMapper userMapper;
+    private UmsUserService userService;
 
     @Autowired
     private UmsUserRoleRelationService userRoleRelationService;
@@ -52,58 +48,21 @@ public class UmsUserCacheServiceImpl implements UmsUserCacheService {
     private String REDIS_KEY_RESOURCE_LIST;
 
     @Override
-    public void delUser(Long userId) {
-        UmsUser user = userService.getById(userId);
-        if (user != null) {
-            String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + user.getUsername();
-            redisService.del(key);
-        }
-    }
-
-    @Override
-    public void delResourceList(Long userId) {
-        String key = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":" + userId;
-        redisService.del(key);
-    }
-
-    @Override
-    public void delResourceListByRole(Long roleId) {
-        QueryWrapper<UmsUserRoleRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsUserRoleRelation::getRoleId,roleId);
-        List<UmsUserRoleRelation> relationList = userRoleRelationService.list(wrapper);
-        if (CollUtil.isNotEmpty(relationList)) {
-            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
-            List<String> keys = relationList.stream().map(relation -> keyPrefix + relation.getUserId()).collect(Collectors.toList());
-            redisService.del(keys);
-        }
-    }
-
-    @Override
-    public void delResourceListByRoleIds(List<Long> roleIds) {
-        QueryWrapper<UmsUserRoleRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().in(UmsUserRoleRelation::getRoleId,roleIds);
-        List<UmsUserRoleRelation> relationList = userRoleRelationService.list(wrapper);
-        if (CollUtil.isNotEmpty(relationList)) {
-            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
-            List<String> keys = relationList.stream().map(relation -> keyPrefix + relation.getUserId()).collect(Collectors.toList());
-            redisService.del(keys);
-        }
-    }
-
-    @Override
-    public void delResourceListByResource(Long resourceId) {
-        List<Long> userIdList = userMapper.getUserIdList(resourceId);
-        if (CollUtil.isNotEmpty(userIdList)) {
-            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
-            List<String> keys = userIdList.stream().map(userId -> keyPrefix + userId).collect(Collectors.toList());
-            redisService.del(keys);
-        }
-    }
-
-    @Override
-    public UmsUser getUser(String username) {
+    public UmsUser getUserByUsername(String username) {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + username;
-        return (UmsUser) redisService.get(key);
+        return (UmsUser)redisService.get(key);
+    }
+
+    @Override
+    public List<UmsResource> getResourceListByUserId(Long userId) {
+        String key = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":" + userId;
+        return (List<UmsResource>)redisService.get(key);
+    }
+
+    @Override
+    public void setResourceList(Long userId, List<UmsResource> resourceList) {
+        String key = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":" + userId;
+        redisService.set(key, resourceList, REDIS_EXPIRE);
     }
 
     @Override
@@ -113,15 +72,58 @@ public class UmsUserCacheServiceImpl implements UmsUserCacheService {
     }
 
     @Override
-    public List<UmsResource> getResourceList(Long userId) {
-        String key = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":" + userId;
-        return (List<UmsResource>) redisService.get(key);
+    public void delUserByUserId(Long userId) {
+        UmsUser user = userService.getById(userId);
+        if (user != null) {
+            String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + user.getUsername();
+            redisService.del(key);
+        }
     }
 
     @Override
-    public void setResourceList(Long userId, List<UmsResource> resourceList) {
+    public void delResourceListByUserId(Long userId) {
         String key = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":" + userId;
-        redisService.set(key, resourceList, REDIS_EXPIRE);
+        redisService.del(key);
+    }
+
+    @Override
+    public void delResourceListByRoleId(Long roleId) {
+        LambdaQueryWrapper<UmsUserRoleRelation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UmsUserRoleRelation::getRoleId, roleId);
+        List<UmsUserRoleRelation> relationList = userRoleRelationService.list(wrapper);
+        if (CollUtil.isNotEmpty(relationList)) {
+            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
+            List<String> keys = relationList.stream()
+                    .map(relation -> keyPrefix + relation.getUserId())
+                    .collect(Collectors.toList());
+            redisService.del(keys);
+        }
+    }
+
+    @Override
+    public void delResourceListByRoleIds(List<Long> roleIds) {
+        LambdaQueryWrapper<UmsUserRoleRelation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(UmsUserRoleRelation::getRoleId, roleIds);
+        List<UmsUserRoleRelation> relationList = userRoleRelationService.list(wrapper);
+        if (CollUtil.isNotEmpty(relationList)) {
+            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
+            List<String> keys = relationList.stream()
+                    .map(relation -> keyPrefix + relation.getUserId())
+                    .collect(Collectors.toList());
+            redisService.del(keys);
+        }
+    }
+
+    @Override
+    public void delResourceListByResourceId(Long resourceId) {
+        List<Long> userIdList = userService.getIdsByResourceId(resourceId);
+        if (CollUtil.isNotEmpty(userIdList)) {
+            String keyPrefix = REDIS_DATABASE + ":" + REDIS_KEY_RESOURCE_LIST + ":";
+            List<String> keys = userIdList.stream()
+                    .map(userId -> keyPrefix + userId)
+                    .collect(Collectors.toList());
+            redisService.del(keys);
+        }
     }
 
 }

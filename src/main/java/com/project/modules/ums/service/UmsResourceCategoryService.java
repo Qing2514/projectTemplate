@@ -9,5 +9,4 @@ import com.project.modules.ums.model.UmsResourceCategory;
  *
  * @author Qing2514
  */
-public interface UmsResourceCategoryService extends IService<UmsResourceCategory> {
-}
+public interface UmsResourceCategoryService extends IService<UmsResourceCategory> {}

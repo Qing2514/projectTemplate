@@ -16,7 +16,7 @@ import java.util.List;
 public interface UmsMenuService extends IService<UmsMenu> {
 
     /**
-     * 根据用户ID查询菜单列表
+     * 根据用户ID查询
      *
      * @param userId 用户ID
      * @return 菜单列表
@@ -24,7 +24,7 @@ public interface UmsMenuService extends IService<UmsMenu> {
     List<UmsMenu> getByUserId(Long userId);
 
     /**
-     * 根据角色ID查询菜单列表
+     * 根据角色ID查询
      *
      * @param roleId 角色ID
      * @return 菜单列表
@@ -32,24 +32,24 @@ public interface UmsMenuService extends IService<UmsMenu> {
     List<UmsMenu> getByRoleId(Long roleId);
 
     /**
-     * 分页查询菜单列表
+     * 根据父级菜单ID分页查询
      *
      * @param parentId 父级菜单ID
      * @param pageSize 页大小
      * @param pageNum  页码
      * @return 菜单列表
      */
-    Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum);
+    Page<UmsMenu> getPage(Long parentId, Integer pageSize, Integer pageNum);
 
     /**
-     * 查询树形结构菜单列表
+     * 查询树形结构列表
      *
      * @return 菜单节点列表
      */
     List<UmsMenuNode> treeList();
 
     /**
-     * 添加菜单
+     * 添加
      *
      * @param umsMenu 菜单
      * @return 成功标志
@@ -57,7 +57,7 @@ public interface UmsMenuService extends IService<UmsMenu> {
     boolean create(UmsMenu umsMenu);
 
     /**
-     * 修改菜单
+     * 修改
      *
      * @param umsMenu 菜单
      * @return 成功标志
@@ -65,7 +65,7 @@ public interface UmsMenuService extends IService<UmsMenu> {
     boolean update(UmsMenu umsMenu);
 
     /**
-     * 修改菜单显示状态
+     * 修改显示状态
      *
      * @param id     菜单ID
      * @param hidden 隐藏标志

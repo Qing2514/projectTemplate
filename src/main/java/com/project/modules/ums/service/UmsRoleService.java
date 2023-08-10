@@ -15,7 +15,15 @@ import java.util.List;
 public interface UmsRoleService extends IService<UmsRole> {
 
     /**
-     * 分页获取角色列表
+     * 根据用户ID查询
+     *
+     * @param userId 用户ID
+     * @return 角色列表
+     */
+    List<UmsRole> getByUserId(Long userId);
+
+    /**
+     * 根据角色名称分页模糊查询
      *
      * @param keyword  关键字
      * @param pageSize 页大小
@@ -25,7 +33,16 @@ public interface UmsRoleService extends IService<UmsRole> {
     Page<UmsRole> getPage(String keyword, Integer pageSize, Integer pageNum);
 
     /**
-     * 根据ID列表批量删除角色
+     * 根据ID修改状态
+     *
+     * @param id     角色ID
+     * @param status 状态标志
+     * @return 成功标志
+     */
+    boolean updateStatus(Long id, Integer status);
+
+    /**
+     * 根据ID列表批量删除
      *
      * @param ids ID列表
      * @return 成功标志
@@ -33,7 +50,7 @@ public interface UmsRoleService extends IService<UmsRole> {
     boolean deleteBatch(List<Long> ids);
 
     /**
-     * 给角色分配菜单
+     * 根据ID分配菜单
      *
      * @param roleId  角色ID
      * @param menuIds 菜单ID列表
@@ -43,7 +60,7 @@ public interface UmsRoleService extends IService<UmsRole> {
     int allocMenu(Long roleId, List<Long> menuIds);
 
     /**
-     * 给角色分配资源
+     * 根据ID分配资源
      *
      * @param roleId      角色ID
      * @param resourceIds 资源ID列表

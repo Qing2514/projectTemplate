@@ -28,71 +28,62 @@ public class UmsMenuController {
     @Autowired
     private UmsMenuService menuService;
 
-    @ApiOperation("根据ID查询菜单")
+    @ApiOperation("根据ID查询")
     @GetMapping(value = "/{id}")
     public CommonResult<UmsMenu> getById(@PathVariable Long id) {
         UmsMenu umsMenu = menuService.getById(id);
         return CommonResult.success(umsMenu);
     }
 
-    @ApiOperation("根据父级菜单ID分页查询菜单")
-    @GetMapping(value = "/list/{parentId}")
-    public CommonResult<CommonPage<UmsMenu>> list(@PathVariable Long parentId,
+    @ApiOperation("根据角色ID查询")
+    @GetMapping(value = "/role/{roleId}")
+    public CommonResult<List<UmsMenu>> getByRoleId(@PathVariable Long roleId) {
+        List<UmsMenu> menuList = menuService.getByRoleId(roleId);
+        return CommonResult.success(menuList);
+    }
+
+    @ApiOperation("根据父级菜单ID分页查询")
+    @GetMapping(value = "/page/{parentId}")
+    public CommonResult<CommonPage<UmsMenu>> getPage(@PathVariable Long parentId,
                                                   @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                   @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        Page<UmsMenu> menuList = menuService.list(parentId, pageSize, pageNum);
+        Page<UmsMenu> menuList = menuService.getPage(parentId, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(menuList));
     }
 
-    @ApiOperation("查询树形结构菜单列表")
-    @GetMapping(value = "/treeList")
+    @ApiOperation("查询树形结构列表")
+    @GetMapping(value = "/tree")
     public CommonResult<List<UmsMenuNode>> treeList() {
         List<UmsMenuNode> list = menuService.treeList();
         return CommonResult.success(list);
     }
 
-    @ApiOperation("添加菜单")
+    @ApiOperation("添加")
     @PostMapping(value = "")
     public CommonResult<Object> create(@RequestBody UmsMenu umsMenu) {
         boolean success = menuService.create(umsMenu);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("修改菜单")
+    @ApiOperation("修改")
     @PutMapping(value = "")
     public CommonResult<Object> update(@RequestBody UmsMenu umsMenu) {
         boolean success = menuService.update(umsMenu);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("修改菜单显示状态")
-    @PutMapping(value = "/updateHidden/{id}")
+    @ApiOperation("根据ID修改显示状态")
+    @PutMapping(value = "/{id}/hidden")
     public CommonResult<Object> updateHidden(@PathVariable Long id, @RequestParam("hidden") Integer hidden) {
         boolean success = menuService.updateHidden(id, hidden);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("根据ID删除菜单")
+    @ApiOperation("根据ID删除")
     @DeleteMapping(value = "/{id}")
     public CommonResult<Object> delete(@PathVariable Long id) {
         boolean success = menuService.removeById(id);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
 }

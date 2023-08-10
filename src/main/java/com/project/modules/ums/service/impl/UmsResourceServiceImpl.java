@@ -2,7 +2,6 @@ package com.project.modules.ums.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.project.modules.ums.mapper.UmsResourceMapper;
@@ -28,24 +27,28 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsRe
     private UmsUserCacheService userCacheService;
 
     @Override
+    public List<UmsResource> getByUserId(Long userId) {
+        return getBaseMapper().getByUserId(userId);
+    }
+
+    @Override
     public List<UmsResource> getByRoleId(Long roleId) {
         return getBaseMapper().getByRoleId(roleId);
     }
 
     @Override
-    public Page<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,
+    public Page<UmsResource> getPage(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize,
                                   Integer pageNum) {
         Page<UmsResource> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<UmsResource> wrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<UmsResource> lambda = wrapper.lambda();
+        LambdaQueryWrapper<UmsResource> wrapper = new LambdaQueryWrapper<>();
         if (categoryId != null) {
-            lambda.eq(UmsResource::getCategoryId, categoryId);
+            wrapper.eq(UmsResource::getCategoryId, categoryId);
         }
         if (StrUtil.isNotEmpty(nameKeyword)) {
-            lambda.like(UmsResource::getName, nameKeyword);
+            wrapper.like(UmsResource::getName, nameKeyword);
         }
         if (StrUtil.isNotEmpty(urlKeyword)) {
-            lambda.like(UmsResource::getUrl, urlKeyword);
+            wrapper.like(UmsResource::getUrl, urlKeyword);
         }
         return page(page, wrapper);
     }
@@ -53,14 +56,14 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsRe
     @Override
     public boolean update(UmsResource umsResource) {
         boolean success = updateById(umsResource);
-        userCacheService.delResourceListByResource(umsResource.getId());
+        userCacheService.delResourceListByResourceId(umsResource.getId());
         return success;
     }
 
     @Override
     public boolean delete(Long id) {
         boolean success = removeById(id);
-        userCacheService.delResourceListByResource(id);
+        userCacheService.delResourceListByResourceId(id);
         return success;
     }
 

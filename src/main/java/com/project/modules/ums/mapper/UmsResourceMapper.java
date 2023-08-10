@@ -14,15 +14,15 @@ import java.util.List;
 public interface UmsResourceMapper extends BaseMapper<UmsResource> {
 
     /**
-     * 根据用户ID查询用户可访问资源列表
+     * 根据用户ID查询
      *
      * @param userId 用户ID
      * @return 资源列表
      */
-    List<UmsResource> getResourceList(@Param("userId") Long userId);
+    List<UmsResource> getByUserId(@Param("userId") Long userId);
 
     /**
-     * 根据角色ID查询资源
+     * 根据角色ID查询
      *
      * @param roleId 角色ID
      * @return 资源列表

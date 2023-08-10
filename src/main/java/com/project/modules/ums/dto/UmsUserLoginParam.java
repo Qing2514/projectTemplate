@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 /**
  * 用户登录参数
@@ -18,6 +19,7 @@ public class UmsUserLoginParam {
     private String username;
 
     @NotEmpty
+    @Size(min = 6, max = 16, message = "密码必须为6~16位")
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 

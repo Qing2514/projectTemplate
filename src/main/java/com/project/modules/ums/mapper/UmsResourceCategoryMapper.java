@@ -8,6 +8,4 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  *
  * @author Qing2514
  */
-public interface UmsResourceCategoryMapper extends BaseMapper<UmsResourceCategory> {
-
-}
+public interface UmsResourceCategoryMapper extends BaseMapper<UmsResourceCategory> {}

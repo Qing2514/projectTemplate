@@ -20,13 +20,14 @@ public class UmsUserParam {
     private String username;
 
     @NotEmpty
+    @Size(min = 6, max = 16, message = "密码必须为6~16位")
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
     @ApiModelProperty(value = "用户头像")
     private String icon;
 
-    @Size(min = 11, max = 11)
+    @Size(min = 11, max = 11, message = "手机号必须为11位")
     @ApiModelProperty(value = "手机号")
     private String phone;
 

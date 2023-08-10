@@ -11,10 +11,14 @@ public enum ResultCode implements IErrorCode {
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
     FORBIDDEN(403, "没有相关权限"),
 
-    PASSWORD_INCORRECT(1001, "密码不正确"),
-    ACCOUNT_FORBIDDEN(1002, "帐号已被禁用"),
+    ACCOUNT_FORBIDDEN(1001, "帐号已被禁用"),
+    TOKEN_EXPIRE(1002, "token已过期"),
+    PASSWORD_INCORRECT(1003, "密码不正确"),
+    USERNAME_OR_PASSWORD_INCORRECT(1004, "用户名或密码错误"),
+    OLD_PASSWORD_INCORRECT(1005, "用户名或密码错误"),
 
-    USER_NOT_FOUND(2001, "该用户不存在"),
+    USER_EXISTS(2001, "用户已存在"),
+    USER_NOT_EXISTS(2002, "用户不存在"),
     ;
 
     private final long code;

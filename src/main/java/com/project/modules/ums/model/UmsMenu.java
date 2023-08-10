@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_menu")
-@ApiModel(value = "UmsMenu对象", description = "后台菜单表")
+@ApiModel(value = "UmsMenu 对象", description = "后台菜单表")
 public class UmsMenu extends BaseModel {
 
     @ApiModelProperty(value = "父级ID")

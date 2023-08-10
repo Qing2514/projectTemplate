@@ -14,7 +14,7 @@ import java.util.List;
 public interface UmsRoleMapper extends BaseMapper<UmsRole> {
 
     /**
-     * 根据用户ID查询用户所有角色
+     * 根据用户ID查询
      *
      * @param userId 用户ID
      * @return 角色列表

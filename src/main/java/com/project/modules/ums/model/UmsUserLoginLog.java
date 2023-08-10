@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @Builder
 @TableName("ums_user_login_log")
-@ApiModel(value = "UmsUserLoginLog对象", description = "后台用户登录日志表")
+@ApiModel(value = "UmsUserLoginLog 对象", description = "后台用户登录日志表")
 public class UmsUserLoginLog extends BaseModel {
 
     @ApiModelProperty(value = "用户ID")

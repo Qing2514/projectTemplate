@@ -16,7 +16,7 @@
         <result column="deleted" property="deleted"/>
     </resultMap>
 
-    <select id="getResourceList" resultType="com.project.modules.ums.model.UmsResource">
+    <select id="getByUserId" resultType="com.project.modules.ums.model.UmsResource">
         SELECT ur.*
         FROM ums_user_role_relation ar
                  LEFT JOIN ums_role r ON ar.role_id = r.id

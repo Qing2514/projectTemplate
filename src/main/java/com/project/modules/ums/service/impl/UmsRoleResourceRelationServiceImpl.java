@@ -8,11 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * 角色资源关系管理Service实现类
+ * 角色资源关系管理 Service 实现类
  *
  * @author Qing2514
  */
 @Slf4j
 @Service
-public class UmsRoleResourceRelationServiceImpl extends ServiceImpl<UmsRoleResourceRelationMapper, UmsRoleResourceRelation> implements UmsRoleResourceRelationService {
-}
+public class UmsRoleResourceRelationServiceImpl extends ServiceImpl<UmsRoleResourceRelationMapper, UmsRoleResourceRelation>
+        implements UmsRoleResourceRelationService {}

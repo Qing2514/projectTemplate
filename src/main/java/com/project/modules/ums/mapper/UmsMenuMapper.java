@@ -14,7 +14,7 @@ import java.util.List;
 public interface UmsMenuMapper extends BaseMapper<UmsMenu> {
 
     /**
-     * 根据用户ID查询菜单
+     * 根据用户ID查询
      *
      * @param userId 用户ID
      * @return 菜单列表
@@ -22,7 +22,7 @@ public interface UmsMenuMapper extends BaseMapper<UmsMenu> {
     List<UmsMenu> getByUserId(@Param("userId") Long userId);
 
     /**
-     * 根据角色ID查询菜单
+     * 根据角色ID查询
      *
      * @param roleId 角色ID
      * @return 菜单列表

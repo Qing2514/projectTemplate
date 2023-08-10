@@ -1,6 +1,6 @@
 package com.project.modules.ums.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.project.modules.ums.dto.UmsMenuNode;
@@ -34,11 +34,11 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
     }
 
     @Override
-    public Page<UmsMenu> list(Long parentId, Integer pageSize, Integer pageNum) {
-        Page<UmsMenu> page = new Page<>(pageNum,pageSize);
-        QueryWrapper<UmsMenu> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsMenu::getParentId,parentId);
-        return page(page,wrapper);
+    public Page<UmsMenu> getPage(Long parentId, Integer pageSize, Integer pageNum) {
+        Page<UmsMenu> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<UmsMenu> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UmsMenu::getParentId, parentId);
+        return page(page, wrapper);
     }
 
     @Override
@@ -46,7 +46,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         List<UmsMenu> menuList = list();
         return menuList.stream()
                 .filter(menu -> menu.getParentId().equals(0L))
-                .map(menu -> covertMenuNode(menu, menuList)).collect(Collectors.toList());
+                .map(menu -> covertMenuNode(menu, menuList))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -95,7 +96,8 @@ public class UmsMenuServiceImpl extends ServiceImpl<UmsMenuMapper, UmsMenu> impl
         BeanUtils.copyProperties(menu, node);
         List<UmsMenuNode> children = menuList.stream()
                 .filter(subMenu -> subMenu.getParentId().equals(menu.getId()))
-                .map(subMenu -> covertMenuNode(subMenu, menuList)).collect(Collectors.toList());
+                .map(subMenu -> covertMenuNode(subMenu, menuList))
+                .collect(Collectors.toList());
         node.setChildren(children);
         return node;
     }

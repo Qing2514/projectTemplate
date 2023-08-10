@@ -25,44 +25,32 @@ public class UmsResourceCategoryController {
     @Autowired
     private UmsResourceCategoryService resourceCategoryService;
 
-    @ApiOperation("查询所有资源分类")
-    @GetMapping(value = "/listAll")
-    public CommonResult<List<UmsResourceCategory>> listAll() {
+    @ApiOperation("查询所有")
+    @GetMapping(value = "")
+    public CommonResult<List<UmsResourceCategory>> getAll() {
         List<UmsResourceCategory> resourceList = resourceCategoryService.list();
         return CommonResult.success(resourceList);
     }
 
-    @ApiOperation("添加资源分类")
+    @ApiOperation("添加")
     @PostMapping(value = "")
     public CommonResult<Object> create(@RequestBody UmsResourceCategory umsResourceCategory) {
         boolean success = resourceCategoryService.save(umsResourceCategory);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("修改资源分类")
+    @ApiOperation("修改")
     @PutMapping(value = "")
     public CommonResult<Object> update(@RequestBody UmsResourceCategory umsResourceCategory) {
         boolean success = resourceCategoryService.updateById(umsResourceCategory);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("根据ID删除资源")
+    @ApiOperation("根据ID删除")
     @DeleteMapping(value = "/{id}")
     public CommonResult<Object> delete(@PathVariable Long id) {
         boolean success = resourceCategoryService.removeById(id);
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
 }

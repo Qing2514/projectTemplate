@@ -31,65 +31,60 @@ public class UmsResourceController {
     @Autowired
     private DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
 
-    @ApiOperation("根据ID查询资源")
+    @ApiOperation("根据ID查询")
     @GetMapping(value = "/{id}")
     public CommonResult<UmsResource> getById(@PathVariable Long id) {
         UmsResource umsResource = resourceService.getById(id);
         return CommonResult.success(umsResource);
     }
 
-    @ApiOperation("查询所有资源")
-    @GetMapping(value = "/getAll")
+    @ApiOperation("根据角色ID查询")
+    @GetMapping(value = "/role/{roleId}")
+    public CommonResult<List<UmsResource>> getByRoleId(@PathVariable Long roleId) {
+        List<UmsResource> resourceList = resourceService.getByRoleId(roleId);
+        return CommonResult.success(resourceList);
+    }
+
+    @ApiOperation("查询所有")
+    @GetMapping(value = "")
     public CommonResult<List<UmsResource>> getAll() {
         List<UmsResource> resourceList = resourceService.list();
         return CommonResult.success(resourceList);
     }
 
-    @ApiOperation("根据菜单类型ID、名称、URL分页模糊查询资源")
-    @GetMapping(value = "/list")
-    public CommonResult<CommonPage<UmsResource>> list(@RequestParam(required = false) Long categoryId,
+    @ApiOperation("根据菜单类型ID、名称、URL分页模糊查询")
+    @GetMapping(value = "/page")
+    public CommonResult<CommonPage<UmsResource>> getPage(@RequestParam(required = false) Long categoryId,
                                                       @RequestParam(required = false) String nameKeyword,
                                                       @RequestParam(required = false) String urlKeyword,
                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        Page<UmsResource> resourceList = resourceService.list(categoryId, nameKeyword, urlKeyword, pageSize, pageNum);
+        Page<UmsResource> resourceList = resourceService.getPage(categoryId, nameKeyword, urlKeyword, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(resourceList));
     }
 
-    @ApiOperation("添加资源")
+    @ApiOperation("添加")
     @PostMapping(value = "")
     public CommonResult<Object> create(@RequestBody UmsResource umsResource) {
         boolean success = resourceService.save(umsResource);
         dynamicSecurityMetadataSource.clearDataSource();
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("修改资源")
+    @ApiOperation("修改")
     @PutMapping(value = "")
     public CommonResult<Object> update(@RequestBody UmsResource umsResource) {
         boolean success = resourceService.update(umsResource);
         dynamicSecurityMetadataSource.clearDataSource();
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
-    @ApiOperation("根据ID删除资源")
+    @ApiOperation("根据ID删除")
     @DeleteMapping(value = "/{id}")
     public CommonResult<Object> delete(@PathVariable Long id) {
         boolean success = resourceService.delete(id);
         dynamicSecurityMetadataSource.clearDataSource();
-        if (success) {
-            return CommonResult.success(null);
-        } else {
-            return CommonResult.failed();
-        }
+        return success ? CommonResult.success() : CommonResult.failed();
     }
 
 }

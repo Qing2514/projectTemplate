@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @TableName("ums_user")
-@ApiModel(value = "UmsUser对象", description = "后台用户表")
+@ApiModel(value = "UmsUser 对象", description = "后台用户表")
 public class UmsUser extends BaseModel {
 
     @ApiModelProperty(value = "用户名")

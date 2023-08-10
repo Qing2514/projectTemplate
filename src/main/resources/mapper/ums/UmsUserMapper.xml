@@ -21,7 +21,7 @@
         <result column="deleted" property="deleted"/>
     </resultMap>
 
-    <select id="getUserIdList" resultType="java.lang.Long">
+    <select id="getIdsByResourceId" resultType="java.lang.Long">
         SELECT DISTINCT ar.user_id
         FROM ums_role_resource_relation rr
                  LEFT JOIN ums_user_role_relation ar ON rr.role_id = ar.role_id

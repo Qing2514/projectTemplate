@@ -13,7 +13,7 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_resource_category")
-@ApiModel(value = "UmsResourceCategory对象", description = "资源分类表")
+@ApiModel(value = "UmsResourceCategory 对象", description = "资源分类表")
 public class UmsResourceCategory extends BaseModel {
 
     @ApiModelProperty(value = "分类名称")

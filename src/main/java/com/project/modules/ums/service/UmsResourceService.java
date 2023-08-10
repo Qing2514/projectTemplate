@@ -15,7 +15,15 @@ import java.util.List;
 public interface UmsResourceService extends IService<UmsResource> {
 
     /**
-     * 根据角色ID查询资源列表
+     * 根据用户ID查询
+     *
+     * @param userId 用户ID
+     * @return 资源列表
+     */
+    List<UmsResource> getByUserId(Long userId);
+
+    /**
+     * 根据角色ID查询
      *
      * @param roleId 角色ID
      * @return 资源列表
@@ -23,7 +31,7 @@ public interface UmsResourceService extends IService<UmsResource> {
     List<UmsResource> getByRoleId(Long roleId);
 
     /**
-     * 分页查询资源列表
+     * 根据菜单类型ID、名称、URL分页模糊查询
      *
      * @param categoryId  资源分类ID
      * @param nameKeyword 名称
@@ -32,10 +40,10 @@ public interface UmsResourceService extends IService<UmsResource> {
      * @param pageNum     页码
      * @return 资源列表
      */
-    Page<UmsResource> list(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum);
+    Page<UmsResource> getPage(Long categoryId, String nameKeyword, String urlKeyword, Integer pageSize, Integer pageNum);
 
     /**
-     * 修改资源
+     * 修改
      *
      * @param umsResource 资源
      * @return 成功标志
@@ -43,7 +51,7 @@ public interface UmsResourceService extends IService<UmsResource> {
     boolean update(UmsResource umsResource);
 
     /**
-     * 根据资源ID删除资源
+     * 根据资源ID删除
      *
      * @param id 资源ID
      * @return 成功标志

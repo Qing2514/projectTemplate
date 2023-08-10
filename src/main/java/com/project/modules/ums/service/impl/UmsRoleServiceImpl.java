@@ -39,14 +39,26 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
     private UmsRoleResourceRelationService roleResourceRelationService;
 
     @Override
+    public List<UmsRole> getByUserId(Long userId) {
+        return getBaseMapper().getByUserId(userId);
+    }
+
+    @Override
     public Page<UmsRole> getPage(String keyword, Integer pageSize, Integer pageNum) {
         Page<UmsRole> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<UmsRole> wrapper = new QueryWrapper<>();
-        LambdaQueryWrapper<UmsRole> lambda = wrapper.lambda();
+        LambdaQueryWrapper<UmsRole> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotEmpty(keyword)) {
-            lambda.like(UmsRole::getName, keyword);
+            wrapper.like(UmsRole::getName, keyword);
         }
         return page(page, wrapper);
+    }
+
+    @Override
+    public boolean updateStatus(Long id, Integer status) {
+        UmsRole umsRole = new UmsRole();
+        umsRole.setId(id);
+        umsRole.setStatus(status);
+        return updateById(umsRole);
     }
 
     @Override
@@ -59,8 +71,8 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
     @Override
     public int allocMenu(Long roleId, List<Long> menuIds) {
         //先删除原有关系
-        QueryWrapper<UmsRoleMenuRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsRoleMenuRelation::getRoleId, roleId);
+        LambdaQueryWrapper<UmsRoleMenuRelation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UmsRoleMenuRelation::getRoleId, roleId);
         roleMenuRelationService.remove(wrapper);
         //批量插入新关系
         List<UmsRoleMenuRelation> relationList = new ArrayList<>();
@@ -77,8 +89,8 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
     @Override
     public int allocResource(Long roleId, List<Long> resourceIds) {
         //先删除原有关系
-        QueryWrapper<UmsRoleResourceRelation> wrapper = new QueryWrapper<>();
-        wrapper.lambda().eq(UmsRoleResourceRelation::getRoleId, roleId);
+        LambdaQueryWrapper<UmsRoleResourceRelation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UmsRoleResourceRelation::getRoleId, roleId);
         roleResourceRelationService.remove(wrapper);
         //批量插入新关系
         List<UmsRoleResourceRelation> relationList = new ArrayList<>();
@@ -89,7 +101,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
             relationList.add(relation);
         }
         roleResourceRelationService.saveBatch(relationList);
-        userCacheService.delResourceListByRole(roleId);
+        userCacheService.delResourceListByRoleId(roleId);
         return resourceIds.size();
     }
 

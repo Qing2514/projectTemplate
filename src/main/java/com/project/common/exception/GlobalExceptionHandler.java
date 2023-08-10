@@ -1,6 +1,7 @@
 package com.project.common.exception;
 
 import com.project.common.api.CommonResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * 全局异常处理
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     public CommonResult<Object> handle(IllegalArgumentException e) {
+        log.error(e.getMessage());
         return CommonResult.failed(e.getMessage());
     }
 
     @ExceptionHandler(value = ApiException.class)
     public CommonResult<Object> handle(ApiException e) {
+        log.error(e.getMessage());
         if (e.getErrorCode() != null) {
             return CommonResult.failed(e.getErrorCode());
         }
