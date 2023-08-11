@@ -8,8 +8,8 @@ import com.project.modules.ums.mapper.UmsResourceMapper;
 import com.project.modules.ums.model.UmsResource;
 import com.project.modules.ums.service.UmsResourceService;
 import com.project.modules.ums.service.UmsUserCacheService;
+import com.project.security.util.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +23,9 @@ import java.util.List;
 @Service
 public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsResource> implements UmsResourceService {
 
-    @Autowired
-    private UmsUserCacheService userCacheService;
+    public UmsUserCacheService getCacheService() {
+        return SpringUtil.getBean(UmsUserCacheService.class);
+    }
 
     @Override
     public List<UmsResource> getByUserId(Long userId) {
@@ -56,14 +57,14 @@ public class UmsResourceServiceImpl extends ServiceImpl<UmsResourceMapper, UmsRe
     @Override
     public boolean update(UmsResource umsResource) {
         boolean success = updateById(umsResource);
-        userCacheService.delResourceListByResourceId(umsResource.getId());
+        getCacheService().delResourceListByResourceId(umsResource.getId());
         return success;
     }
 
     @Override
     public boolean delete(Long id) {
         boolean success = removeById(id);
-        userCacheService.delResourceListByResourceId(id);
+        getCacheService().delResourceListByResourceId(id);
         return success;
     }
 

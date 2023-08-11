@@ -26,18 +26,18 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 后台用户管理 Service 实现类
@@ -62,6 +62,10 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
 
     @Autowired
     private UmsUserRoleRelationService userRoleRelationService;
+
+    public UmsUserCacheService getCacheService() {
+        return SpringUtil.getBean(UmsUserCacheService.class);
+    }
 
     @Override
     public UmsUser register(UmsUserParam umsUserParam) {
@@ -141,17 +145,29 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     }
 
     @Override
-    public UmsUserCacheService getCacheService() {
-        return SpringUtil.getBean(UmsUserCacheService.class);
-    }
-
-    @Override
     public UserDetails loadByUsername(String username) {
         // 获取用户信息
         UmsUser user = getByUsername(username);
         Asserts.notNull(user, ResultCode.USERNAME_OR_PASSWORD_INCORRECT);
         List<UmsResource> resourceList = getResourceList(user.getId());
         return new AdminUserDetails(user, resourceList);
+    }
+
+    @Override
+    public UmsUser getByUsername(String username) {
+        UmsUser user = getCacheService().getUserByUsername(username);
+        if (user != null) {
+            return user;
+        }
+        LambdaQueryWrapper<UmsUser> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UmsUser::getUsername, username);
+        List<UmsUser> userList = list(wrapper);
+        if (!ObjectUtils.isEmpty(userList)) {
+            user = userList.get(0);
+            getCacheService().setUser(user);
+            return user;
+        }
+        return null;
     }
 
     /**
@@ -173,23 +189,6 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     }
 
     @Override
-    public UmsUser getByUsername(String username) {
-        UmsUser user = getCacheService().getUserByUsername(username);
-        if (user != null) {
-            return user;
-        }
-        LambdaQueryWrapper<UmsUser> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(UmsUser::getUsername, username);
-        List<UmsUser> userList = list(wrapper);
-        if (userList != null && userList.size() > 0) {
-            user = userList.get(0);
-            getCacheService().setUser(user);
-            return user;
-        }
-        return null;
-    }
-
-    @Override
     public List<Long> getIdsByResourceId(Long resourceId) {
         return getBaseMapper().getIdsByResourceId(resourceId);
     }
@@ -206,7 +205,18 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     }
 
     @Override
+    public boolean updatePasswordByUsername(String username, UpdatePasswordParam updatePasswordParam) {
+        if (!username.equals(updatePasswordParam.getUsername())) {
+            Asserts.fail(ResultCode.NOT_CURRENT_USER);
+        }
+        return updatePassword(updatePasswordParam);
+    }
+
+    @Override
     public boolean updatePassword(UpdatePasswordParam param) {
+        if (!param.getNewPassword().equals(param.getOldPassword())) {
+            Asserts.fail(ResultCode.NEW_PASSWORD_EQUALS_OLD);
+        }
         LambdaQueryWrapper<UmsUser> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UmsUser::getUsername, param.getUsername());
         List<UmsUser> userList = list(wrapper);
@@ -230,7 +240,18 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     }
 
     @Override
-    public int allocRole(Long userId, List<Long> roleIds) {
+    public boolean updateByUsername(String username, UmsUser user) {
+        if (!username.equals(user.getUsername())) {
+            Asserts.fail(ResultCode.NOT_CURRENT_USER);
+        }
+        UmsUser oldUser = getByUsername(username);
+        BeanUtils.copyProperties(user, oldUser);
+        getCacheService().delUserByUserId(oldUser.getId());
+        return updateById(oldUser);
+    }
+
+    @Override
+    public int addRole(Long userId, List<Long> roleIds) {
         int count = roleIds == null ? 0 : roleIds.size();
         //先删除原来的关系
         LambdaQueryWrapper<UmsUserRoleRelation> wrapper = new LambdaQueryWrapper<>();
@@ -238,13 +259,12 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
         userRoleRelationService.remove(wrapper);
         //建立新关系
         if (!CollectionUtils.isEmpty(roleIds)) {
-            List<UmsUserRoleRelation> list = new ArrayList<>();
-            for (Long roleId : roleIds) {
+            List<UmsUserRoleRelation> list = roleIds.stream().map(roleId -> {
                 UmsUserRoleRelation roleRelation = new UmsUserRoleRelation();
                 roleRelation.setUserId(userId);
                 roleRelation.setRoleId(roleId);
-                list.add(roleRelation);
-            }
+                return roleRelation;
+            }).collect(Collectors.toList());
             userRoleRelationService.saveBatch(list);
         }
         getCacheService().delResourceListByUserId(userId);
@@ -252,10 +272,18 @@ public class UmsUserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impl
     }
 
     @Override
-    public boolean delete(Long id) {
+    public boolean deleteById(Long id) {
         getCacheService().delUserByUserId(id);
         getCacheService().delResourceListByUserId(id);
         return removeById(id);
+    }
+
+    @Override
+    public boolean deleteByUsername(String username) {
+        UmsUser user = getByUsername(username);
+        getCacheService().delUserByUserId(user.getId());
+        getCacheService().delResourceListByUserId(user.getId());
+        return removeById(user.getId());
     }
 
 }

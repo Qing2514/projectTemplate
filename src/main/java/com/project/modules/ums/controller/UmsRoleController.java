@@ -57,6 +57,20 @@ public class UmsRoleController {
         return success ? CommonResult.success() : CommonResult.failed();
     }
 
+    @ApiOperation("根据ID分配菜单")
+    @PostMapping(value = "/{id}/addMenu")
+    public CommonResult<Integer> addMenu(@PathVariable Long id, @RequestParam List<Long> menuIds) {
+        int count = roleService.addMenu(id, menuIds);
+        return CommonResult.success(count);
+    }
+
+    @ApiOperation("根据ID分配资源")
+    @PostMapping(value = "/{id}/addResource")
+    public CommonResult<Integer> addResource(@PathVariable Long id, @RequestParam List<Long> resourceIds) {
+        int count = roleService.addResource(id, resourceIds);
+        return CommonResult.success(count);
+    }
+
     @ApiOperation("修改")
     @PutMapping(value = "")
     public CommonResult<Object> update(@RequestBody UmsRole role) {
@@ -83,20 +97,6 @@ public class UmsRoleController {
     public CommonResult<Object> deleteBatch(@RequestParam("ids") List<Long> ids) {
         boolean success = roleService.deleteBatch(ids);
         return success ? CommonResult.success() : CommonResult.failed();
-    }
-
-    @ApiOperation("根据角色ID分配菜单")
-    @PostMapping(value = "/allocMenu")
-    public CommonResult<Integer> allocMenu(@RequestParam Long roleId, @RequestParam List<Long> menuIds) {
-        int count = roleService.allocMenu(roleId, menuIds);
-        return CommonResult.success(count);
-    }
-
-    @ApiOperation("根据角色ID分配资源")
-    @PostMapping(value = "/allocResource")
-    public CommonResult<Integer> allocResource(@RequestParam Long roleId, @RequestParam List<Long> resourceIds) {
-        int count = roleService.allocResource(roleId, resourceIds);
-        return CommonResult.success(count);
     }
 
 }

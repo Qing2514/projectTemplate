@@ -33,6 +33,26 @@ public interface UmsRoleService extends IService<UmsRole> {
     Page<UmsRole> getPage(String keyword, Integer pageSize, Integer pageNum);
 
     /**
+     * 根据ID分配菜单
+     *
+     * @param roleId  角色ID
+     * @param menuIds 菜单ID列表
+     * @return 成功标志
+     */
+    @Transactional
+    int addMenu(Long roleId, List<Long> menuIds);
+
+    /**
+     * 根据ID分配资源
+     *
+     * @param roleId      角色ID
+     * @param resourceIds 资源ID列表
+     * @return 成功标志
+     */
+    @Transactional
+    int addResource(Long roleId, List<Long> resourceIds);
+
+    /**
      * 根据ID修改状态
      *
      * @param id     角色ID
@@ -48,25 +68,5 @@ public interface UmsRoleService extends IService<UmsRole> {
      * @return 成功标志
      */
     boolean deleteBatch(List<Long> ids);
-
-    /**
-     * 根据ID分配菜单
-     *
-     * @param roleId  角色ID
-     * @param menuIds 菜单ID列表
-     * @return 成功标志
-     */
-    @Transactional
-    int allocMenu(Long roleId, List<Long> menuIds);
-
-    /**
-     * 根据ID分配资源
-     *
-     * @param roleId      角色ID
-     * @param resourceIds 资源ID列表
-     * @return 成功标志
-     */
-    @Transactional
-    int allocResource(Long roleId, List<Long> resourceIds);
 
 }

@@ -26,6 +26,7 @@
                  LEFT JOIN ums_menu m ON rmr.menu_id = m.id
         WHERE arr.user_id = #{userId}
           AND m.id IS NOT NULL
+          AND m.deleted = 0
         GROUP BY m.id
     </select>
 
@@ -35,6 +36,7 @@
                  LEFT JOIN ums_menu m ON rmr.menu_id = m.id
         WHERE rmr.role_id = #{roleId}
           AND m.id IS NOT NULL
+          AND m.deleted = 0
         GROUP BY m.id
     </select>
 

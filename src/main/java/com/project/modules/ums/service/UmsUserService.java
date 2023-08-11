@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.project.modules.ums.dto.UmsUserLoginParam;
 import com.project.modules.ums.dto.UmsUserParam;
 import com.project.modules.ums.dto.UpdatePasswordParam;
-import com.project.modules.ums.model.UmsResource;
 import com.project.modules.ums.model.UmsUser;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +43,6 @@ public interface UmsUserService extends IService<UmsUser> {
     String refreshToken(String oldToken);
 
     /**
-     * 获取缓存服务
-     *
-     * @return UmsUserCacheService
-     */
-    UmsUserCacheService getCacheService();
-
-    /**
      * 根据用户名查询
      *
      * @param username 用户名
@@ -85,6 +77,15 @@ public interface UmsUserService extends IService<UmsUser> {
     Page<UmsUser> getPage(String keyword, Integer pageSize, Integer pageNum);
 
     /**
+     * 根据用户名修改密码
+     *
+     * @param username 用户名
+     * @param updatePasswordParam 修改密码参数
+     * @return 成功标志
+     */
+    boolean updatePasswordByUsername(String username, UpdatePasswordParam updatePasswordParam);
+
+    /**
      * 修改密码
      *
      * @param updatePasswordParam 修改密码参数
@@ -102,6 +103,15 @@ public interface UmsUserService extends IService<UmsUser> {
     boolean updateStatus(Long id, Integer status);
 
     /**
+     * 根据用户名修改
+     *
+     * @param username 用户名
+     * @param user 用户
+     * @return 成功标志
+     */
+    boolean updateByUsername(String username, UmsUser user);
+
+    /**
      * 根据用户ID分配角色
      *
      * @param userId  用户ID
@@ -109,7 +119,7 @@ public interface UmsUserService extends IService<UmsUser> {
      * @return 成功标志
      */
     @Transactional
-    int allocRole(Long userId, List<Long> roleIds);
+    int addRole(Long userId, List<Long> roleIds);
 
     /**
      * 根据ID删除
@@ -117,5 +127,13 @@ public interface UmsUserService extends IService<UmsUser> {
      * @param id 用户ID
      * @return 成功标志
      */
-    boolean delete(Long id);
+    boolean deleteById(Long id);
+
+    /**
+     * 根据用户名删除
+     *
+     * @param username 用户名
+     * @return 成功标志
+     */
+    boolean deleteByUsername(String username);
 }

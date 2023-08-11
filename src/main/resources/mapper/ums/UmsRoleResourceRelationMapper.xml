@@ -13,4 +13,5 @@
         <result column="update_by" property="updateBy"/>
         <result column="deleted" property="deleted"/>
     </resultMap>
+
 </mapper>

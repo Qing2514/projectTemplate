@@ -24,6 +24,7 @@
                  LEFT JOIN ums_resource ur ON ur.id = rrr.resource_id
         WHERE ar.user_id = #{userId}
           AND ur.id IS NOT NULL
+          AND ur.deleted = 0
         GROUP BY ur.id
     </select>
 
@@ -33,6 +34,7 @@
                  LEFT JOIN ums_resource r ON rrr.resource_id = r.id
         WHERE rrr.role_id = #{roleId}
           AND r.id IS NOT NULL
+          AND r.deleted = 0
         GROUP BY r.id
     </select>
 

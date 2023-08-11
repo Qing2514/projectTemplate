@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * 断言处理类，用于抛出各种API异常
+ *
+ * @author Qing2514
  */
 public class Asserts extends Assert {
 

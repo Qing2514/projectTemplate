@@ -51,8 +51,7 @@ secure:
       - /favicon.ico
       - /actuator/**
       - /druid/**
-      - /user/register
-      - /user/login
-      - /user/logout
-      - /user/info
-      - /user/logout
+      - /admin/register
+      - /admin/login
+      - /admin/logout
+      - /admin/refreshToken

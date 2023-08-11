@@ -2,7 +2,6 @@ package com.project.modules.ums.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.project.modules.ums.mapper.UmsRoleMapper;
@@ -54,22 +53,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
     }
 
     @Override
-    public boolean updateStatus(Long id, Integer status) {
-        UmsRole umsRole = new UmsRole();
-        umsRole.setId(id);
-        umsRole.setStatus(status);
-        return updateById(umsRole);
-    }
-
-    @Override
-    public boolean deleteBatch(List<Long> ids) {
-        boolean success = removeByIds(ids);
-        userCacheService.delResourceListByRoleIds(ids);
-        return success;
-    }
-
-    @Override
-    public int allocMenu(Long roleId, List<Long> menuIds) {
+    public int addMenu(Long roleId, List<Long> menuIds) {
         //先删除原有关系
         LambdaQueryWrapper<UmsRoleMenuRelation> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UmsRoleMenuRelation::getRoleId, roleId);
@@ -87,7 +71,7 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
     }
 
     @Override
-    public int allocResource(Long roleId, List<Long> resourceIds) {
+    public int addResource(Long roleId, List<Long> resourceIds) {
         //先删除原有关系
         LambdaQueryWrapper<UmsRoleResourceRelation> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UmsRoleResourceRelation::getRoleId, roleId);
@@ -103,6 +87,21 @@ public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole> impl
         roleResourceRelationService.saveBatch(relationList);
         userCacheService.delResourceListByRoleId(roleId);
         return resourceIds.size();
+    }
+
+    @Override
+    public boolean updateStatus(Long id, Integer status) {
+        UmsRole umsRole = new UmsRole();
+        umsRole.setId(id);
+        umsRole.setStatus(status);
+        return updateById(umsRole);
+    }
+
+    @Override
+    public boolean deleteBatch(List<Long> ids) {
+        boolean success = removeByIds(ids);
+        userCacheService.delResourceListByRoleIds(ids);
+        return success;
     }
 
 }
