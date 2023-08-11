@@ -13,19 +13,19 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_resource")
-@ApiModel(value = "UmsResource 对象", description = "后台资源表")
+@ApiModel(value = "后台资源表对象", description = "UmsResource")
 public class UmsResource extends BaseModel {
 
-    @ApiModelProperty(value = "资源名称")
+    @ApiModelProperty("资源名称")
     private String name;
 
-    @ApiModelProperty(value = "资源URL")
+    @ApiModelProperty("资源URL")
     private String url;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
-    @ApiModelProperty(value = "资源分类ID")
+    @ApiModelProperty("资源分类ID")
     private Long categoryId;
 
 }

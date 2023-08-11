@@ -10,7 +10,6 @@ import com.project.modules.ums.service.UmsRoleService;
 import com.project.modules.ums.service.UmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +21,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 后台用户管理
+ * 后台个人信息管理
  *
  * @author Qing2514
  */
 @RestController
-@Api(tags = "UmsUserController")
-@Tag(name = "UmsUserController", description = "后台用户管理")
+@Api(value = "UmsUserController", tags = "后台个人信息管理")
 @RequestMapping("/user")
 public class UmsUserController {
 
@@ -41,8 +39,8 @@ public class UmsUserController {
     @Autowired
     private UmsMenuService menuService;
 
-    @ApiOperation(value = "查询当前登录用户信息")
-    @GetMapping(value = "")
+    @ApiOperation("查询当前登录用户信息")
+    @GetMapping("")
     public CommonResult<Map<String, Object>> getByUsername(Principal principal) {
         UmsUser umsUser = userService.getByUsername(principal.getName());
         Map<String, Object> data = new HashMap<>(3);
@@ -57,7 +55,7 @@ public class UmsUserController {
     }
 
     @ApiOperation("修改当前登录用户密码")
-    @PostMapping(value = "/updatePassword")
+    @PostMapping("/updatePassword")
     public CommonResult<Object> updatePassword(@Validated @RequestBody UpdatePasswordParam updatePasswordParam,
                                                Principal principal) {
         boolean success = userService.updatePasswordByUsername(principal.getName(), updatePasswordParam);
@@ -65,14 +63,14 @@ public class UmsUserController {
     }
 
     @ApiOperation("修改当前登录用户信息")
-    @PutMapping(value = "")
+    @PutMapping("")
     public CommonResult<Object> updateByUsername(@RequestBody UmsUser user, Principal principal) {
         boolean success = userService.updateByUsername(principal.getName(), user);
         return success ? CommonResult.success() : CommonResult.failed();
     }
 
     @ApiOperation("注销")
-    @DeleteMapping(value = "")
+    @DeleteMapping("")
     public CommonResult<Object> deleteByUsername(Principal principal) {
         boolean success = userService.deleteByUsername(principal.getName());
         return success ? CommonResult.success() : CommonResult.failed();

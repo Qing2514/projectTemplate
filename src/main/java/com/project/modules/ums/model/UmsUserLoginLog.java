@@ -15,19 +15,19 @@ import lombok.Data;
 @Data
 @Builder
 @TableName("ums_user_login_log")
-@ApiModel(value = "UmsUserLoginLog 对象", description = "后台用户登录日志表")
+@ApiModel(value = "后台用户登录日志表对象", description = "UmsUserLoginLog")
 public class UmsUserLoginLog extends BaseModel {
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty("用户ID")
     private Long userId;
 
-    @ApiModelProperty(value = "登陆地IP")
+    @ApiModelProperty("登陆地IP")
     private String ip;
 
-    @ApiModelProperty(value = "登录地址")
+    @ApiModelProperty("登录地址")
     private String address;
 
-    @ApiModelProperty(value = "浏览器登录类型")
+    @ApiModelProperty("浏览器登录类型")
     private String userAgent;
 
 }

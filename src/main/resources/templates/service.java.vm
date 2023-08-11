@@ -1,0 +1,26 @@
+#set($author = "Qing2514")
+#set($packageName = "com.project")
+package ${package.Service};
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import ${package.Entity}.${entity};
+
+/**
+ * $!{table.comment} Service
+ *
+ * @author ${author}
+ */
+public interface ${table.serviceName} extends IService<${entity}> {
+
+    /**
+     * 根据关键词分页模糊查询
+     *
+     * @param keyword 关键词
+     * @param pageSize 页大小
+     * @param pageNum  页码
+     * @return $!{table.comment}列表
+     */
+    Page<${entity}> getPage(Long keyword, Integer pageSize, Integer pageNum);
+
+}

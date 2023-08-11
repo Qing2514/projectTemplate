@@ -13,19 +13,19 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_role")
-@ApiModel(value = "UmsRole 对象", description = "后台用户角色表")
+@ApiModel(value = "后台用户角色表对象", description = "UmsRole")
 public class UmsRole extends BaseModel {
 
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty("名称")
     private String name;
 
-    @ApiModelProperty(value = "描述")
+    @ApiModelProperty("描述")
     private String description;
 
-    @ApiModelProperty(value = "后台用户数量")
+    @ApiModelProperty("后台用户数量")
     private Integer userCount = 0;
 
-    @ApiModelProperty(value = "帐号启用状态：0->禁用；1->启用")
+    @ApiModelProperty("帐号启用状态：0->禁用；1->启用")
     private Integer status = 1;
 
 }

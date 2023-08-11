@@ -13,13 +13,13 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_role_menu_relation")
-@ApiModel(value = "UmsRoleMenuRelation 对象", description = "后台角色菜单关系表")
+@ApiModel(value = "后台角色菜单关系表对象", description = "UmsRoleMenuRelation")
 public class UmsRoleMenuRelation extends BaseModel {
 
-    @ApiModelProperty(value = "角色ID")
+    @ApiModelProperty("角色ID")
     private Long roleId;
 
-    @ApiModelProperty(value = "菜单ID")
+    @ApiModelProperty("菜单ID")
     private Long menuId;
 
 }

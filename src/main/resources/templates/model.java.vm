@@ -1,0 +1,28 @@
+#set($author = "Qing2514")
+#set($packageName = "com.project")
+package ${package.Entity};
+
+import ${packageName}.common.api.BaseModel;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
+import lombok.Data;
+
+/**
+ * $!{table.comment} Model
+ *
+ * @author ${author}
+ */
+@Data
+@Builder
+@TableName("${table.name}")
+@ApiModel(value = "$!{table.comment}对象", description = "${entity}")
+public class ${entity} extends BaseModel {
+
+#foreach($field in ${table.fields})
+    @ApiModelProperty("${field.comment}")
+    private ${field.propertyType} ${field.propertyName};
+
+#end
+}

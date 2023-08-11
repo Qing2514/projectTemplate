@@ -8,7 +8,6 @@ import com.project.modules.ums.service.UmsResourceService;
 import com.project.security.component.DynamicSecurityMetadataSource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +19,7 @@ import java.util.List;
  * @author Qing2514
  */
 @RestController
-@Api(tags = "UmsResourceController")
-@Tag(name = "UmsResourceController", description = "后台资源管理")
+@Api(value = "UmsResourceController", tags = "后台资源管理")
 @RequestMapping("/resource")
 public class UmsResourceController {
 
@@ -32,28 +30,28 @@ public class UmsResourceController {
     private DynamicSecurityMetadataSource dynamicSecurityMetadataSource;
 
     @ApiOperation("根据ID查询")
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public CommonResult<UmsResource> getById(@PathVariable Long id) {
         UmsResource umsResource = resourceService.getById(id);
         return CommonResult.success(umsResource);
     }
 
     @ApiOperation("根据角色ID查询")
-    @GetMapping(value = "/role/{roleId}")
+    @GetMapping("/role/{roleId}")
     public CommonResult<List<UmsResource>> getByRoleId(@PathVariable Long roleId) {
         List<UmsResource> resourceList = resourceService.getByRoleId(roleId);
         return CommonResult.success(resourceList);
     }
 
     @ApiOperation("查询所有")
-    @GetMapping(value = "")
+    @GetMapping("")
     public CommonResult<List<UmsResource>> getAll() {
         List<UmsResource> resourceList = resourceService.list();
         return CommonResult.success(resourceList);
     }
 
     @ApiOperation("根据菜单类型ID、名称、URL分页模糊查询")
-    @GetMapping(value = "/page")
+    @GetMapping("/page")
     public CommonResult<CommonPage<UmsResource>> getPage(@RequestParam(required = false) Long categoryId,
                                                       @RequestParam(required = false) String nameKeyword,
                                                       @RequestParam(required = false) String urlKeyword,
@@ -64,7 +62,7 @@ public class UmsResourceController {
     }
 
     @ApiOperation("添加")
-    @PostMapping(value = "")
+    @PostMapping("")
     public CommonResult<Object> create(@RequestBody UmsResource umsResource) {
         boolean success = resourceService.save(umsResource);
         dynamicSecurityMetadataSource.clearDataSource();
@@ -72,7 +70,7 @@ public class UmsResourceController {
     }
 
     @ApiOperation("修改")
-    @PutMapping(value = "")
+    @PutMapping("")
     public CommonResult<Object> update(@RequestBody UmsResource umsResource) {
         boolean success = resourceService.update(umsResource);
         dynamicSecurityMetadataSource.clearDataSource();
@@ -80,7 +78,7 @@ public class UmsResourceController {
     }
 
     @ApiOperation("根据ID删除")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public CommonResult<Object> delete(@PathVariable Long id) {
         boolean success = resourceService.delete(id);
         dynamicSecurityMetadataSource.clearDataSource();

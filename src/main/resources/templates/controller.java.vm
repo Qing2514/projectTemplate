@@ -1,0 +1,71 @@
+#set($author = "Qing2514")
+#set($packageName = "com.project")
+## 表名中无前缀时
+###set($modelName = $entity.substring(0, 1).toLowerCase() + $entity.substring(1))
+###set($serviceName = $table.serviceName.substring(0, 1).toLowerCase() + $table.serviceName.substring(1))
+## 表名中有前缀，如Ums、Oms等时
+#set($modelName = $entity.substring(3, 4).toLowerCase() + $entity.substring(4))
+#set($serviceName = $table.serviceName.substring(3, 4).toLowerCase() + $table.serviceName.substring(4))
+package ${package.Controller};
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${packageName}.common.api.CommonPage;
+import ${packageName}.common.api.CommonResult;
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * $!{table.comment} Controller
+ *
+ * @author ${author}
+ */
+@RestController
+@Api(value = "${table.controllerName}", tags = "$!{table.comment}管理")
+@RequestMapping("/${modelName}")
+public class ${table.controllerName} {
+
+    @Autowired
+    private ${table.serviceName} ${serviceName};
+
+    @ApiOperation("根据ID查询")
+    @GetMapping("/{id}")
+    public CommonResult<${entity}> getById(@PathVariable Long id) {
+        ${entity} ${modelName} = ${serviceName}.getById(id);
+        return CommonResult.success(${modelName});
+    }
+
+    @ApiOperation("根据关键字分页模糊查询")
+    @GetMapping(value = "/page")
+    public CommonResult<CommonPage<${entity}>> getPage(@RequestParam(value = "keyword", required = false) Long keyword,
+                                                    @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                                    @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+        Page<${entity}> list = ${serviceName}.getPage(keyword, pageSize, pageNum);
+        return CommonResult.success(CommonPage.restPage(list));
+    }
+
+    @ApiOperation("添加")
+    @PostMapping("")
+    public CommonResult<Object> create(@RequestBody ${entity} ${modelName}) {
+        boolean success = ${serviceName}.save(${modelName});
+        return success ? CommonResult.success() : CommonResult.failed();
+    }
+
+    @ApiOperation("修改")
+    @PutMapping("")
+    public CommonResult<Object> update(@RequestBody ${entity} ${modelName}) {
+        boolean success = ${serviceName}.updateById(${modelName});
+        return success ? CommonResult.success() : CommonResult.failed();
+    }
+
+    @ApiOperation("根据ID删除")
+    @DeleteMapping("/{id}")
+    public CommonResult<Object> delete(@PathVariable Long id) {
+        boolean success = ${serviceName}.removeById(id);
+        return success ? CommonResult.success() : CommonResult.failed();
+    }
+
+}

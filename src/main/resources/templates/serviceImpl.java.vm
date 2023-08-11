@@ -1,0 +1,31 @@
+#set($author = "Qing2514")
+#set($packageName = "com.project")
+package ${package.ServiceImpl};
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${package.Mapper}.${table.mapperName};
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+ * $!{table.comment} Service 实现类
+ *
+ * @author ${author}
+ */
+@Slf4j
+@Service
+public class ${table.serviceImplName} extends ServiceImpl<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+    @Override
+    public Page<${entity}> getPage(Long keyword, Integer pageSize, Integer pageNum) {
+        Page<${entity}> page = new Page<>(pageNum, pageSize);
+        LambdaQueryWrapper<${entity}> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(${entity}::getId, keyword);
+        return page(page, wrapper);
+    }
+
+}

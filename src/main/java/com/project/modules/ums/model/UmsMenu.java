@@ -13,25 +13,25 @@ import lombok.Data;
  */
 @Data
 @TableName("ums_menu")
-@ApiModel(value = "UmsMenu 对象", description = "后台菜单表")
+@ApiModel(value = "后台菜单表对象", description = "UmsMenu")
 public class UmsMenu extends BaseModel {
 
-    @ApiModelProperty(value = "父级ID")
+    @ApiModelProperty("父级ID")
     private Long parentId;
 
-    @ApiModelProperty(value = "菜单名称")
+    @ApiModelProperty("菜单名称")
     private String title;
 
-    @ApiModelProperty(value = "菜单级数")
+    @ApiModelProperty("菜单级数")
     private Integer level;
 
-    @ApiModelProperty(value = "前端名称")
+    @ApiModelProperty("前端名称")
     private String name;
 
-    @ApiModelProperty(value = "前端图标")
+    @ApiModelProperty("前端图标")
     private String icon;
 
-    @ApiModelProperty(value = "前端隐藏")
+    @ApiModelProperty("前端隐藏")
     private Integer hidden;
 
 }

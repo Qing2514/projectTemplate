@@ -10,7 +10,6 @@ import com.project.modules.ums.model.UmsUser;
 import com.project.modules.ums.service.UmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
@@ -22,13 +21,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 后台管理员管理
+ * 后台用户管理 Controller
  *
  * @author Qing2514
  */
 @RestController
-@Api(tags = "UmsAdminController")
-@Tag(name = "UmsAdminController", description = "后台管理员管理")
+@Api(value = "UmsAdminController", tags = "后台用户管理")
 @RequestMapping("/admin")
 public class UmsAdminController {
 
@@ -41,15 +39,15 @@ public class UmsAdminController {
     @Autowired
     private UmsUserService userService;
 
-    @ApiOperation(value = "注册")
-    @PostMapping(value = "/register")
+    @ApiOperation("注册")
+    @PostMapping("/register")
     public CommonResult<UmsUser> register(@Validated @RequestBody UmsUserParam umsUserParam) {
         UmsUser umsUser = userService.register(umsUserParam);
         return CommonResult.success(umsUser);
     }
 
-    @ApiOperation(value = "登录")
-    @PostMapping(value = "/login")
+    @ApiOperation("登录")
+    @PostMapping("/login")
     public CommonResult<Map<String, String>> login(@Validated @RequestBody UmsUserLoginParam umsUserLoginParam) {
         String token = userService.login(umsUserLoginParam);
         Map<String, String> tokenMap = new HashMap<>(2);
@@ -58,14 +56,14 @@ public class UmsAdminController {
         return CommonResult.success(tokenMap);
     }
 
-    @ApiOperation(value = "登出")
-    @PostMapping(value = "/logout")
+    @ApiOperation("登出")
+    @PostMapping("/logout")
     public CommonResult<Object> logout() {
         return CommonResult.success();
     }
 
-    @ApiOperation(value = "刷新token")
-    @GetMapping(value = "/refreshToken")
+    @ApiOperation("刷新token")
+    @GetMapping("/refreshToken")
     public CommonResult<Map<String, String>> refreshToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String refreshToken = userService.refreshToken(token);
@@ -76,14 +74,14 @@ public class UmsAdminController {
     }
 
     @ApiOperation("根据ID查询")
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public CommonResult<UmsUser> getById(@PathVariable Long id) {
         UmsUser user = userService.getById(id);
         return CommonResult.success(user);
     }
 
     @ApiOperation("根据用户名或昵称分页模糊查询")
-    @GetMapping(value = "/page")
+    @GetMapping("/page")
     public CommonResult<CommonPage<UmsUser>> getPage(@RequestParam(value = "keyword", required = false) String keyword,
                                                      @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                      @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
@@ -92,35 +90,35 @@ public class UmsAdminController {
     }
 
     @ApiOperation("修改")
-    @PutMapping(value = "")
+    @PutMapping("")
     public CommonResult<Object> update(@RequestBody UmsUser user) {
         boolean success = userService.updateById(user);
         return success ? CommonResult.success() : CommonResult.failed();
     }
 
     @ApiOperation("修改密码")
-    @PostMapping(value = "/updatePassword")
+    @PostMapping("/updatePassword")
     public CommonResult<Object> updatePassword(@Validated @RequestBody UpdatePasswordParam updatePasswordParam) {
         boolean success = userService.updatePassword(updatePasswordParam);
         return success ? CommonResult.success() : CommonResult.failed();
     }
 
     @ApiOperation("修改状态")
-    @PostMapping(value = "/{id}/status")
+    @PostMapping("/{id}/status")
     public CommonResult<Object> updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
         boolean success = userService.updateStatus(id, status);
         return success ? CommonResult.success() : CommonResult.failed();
     }
 
     @ApiOperation("根据用户ID分配角色")
-    @PostMapping(value = "/{id}/addRole")
+    @PostMapping("/{id}/addRole")
     public CommonResult<Object> addRole(@PathVariable("id") Long id, @RequestParam("roleIds") List<Long> roleIds) {
         int count = userService.addRole(id, roleIds);
         return CommonResult.success(count);
     }
 
     @ApiOperation("根据ID删除")
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public CommonResult<Object> deleteById(@PathVariable Long id) {
         boolean success = userService.deleteById(id);
         return success ? CommonResult.success() : CommonResult.failed();
