@@ -105,7 +105,7 @@ public class UmsAdminController {
 
     @ApiOperation("修改状态")
     @PostMapping("/{id}/status")
-    public CommonResult<Object> updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
+    public CommonResult<Object> updateStatus(@PathVariable Long id, @RequestParam("status") Integer status) {
         boolean success = userService.updateStatus(id, status);
         return success ? CommonResult.success() : CommonResult.failed();
     }

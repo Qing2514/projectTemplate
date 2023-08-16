@@ -52,9 +52,9 @@ public class UmsResourceController {
 
     @ApiOperation("根据菜单类型ID、名称、URL分页模糊查询")
     @GetMapping("/page")
-    public CommonResult<CommonPage<UmsResource>> getPage(@RequestParam(required = false) Long categoryId,
-                                                      @RequestParam(required = false) String nameKeyword,
-                                                      @RequestParam(required = false) String urlKeyword,
+    public CommonResult<CommonPage<UmsResource>> getPage(@RequestParam(value = "categoryId", required = false) Long categoryId,
+                                                      @RequestParam(value = "nameKeyword", required = false) String nameKeyword,
+                                                      @RequestParam(value = "urlKeyword", required = false) String urlKeyword,
                                                       @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
                                                       @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         Page<UmsResource> resourceList = resourceService.getPage(categoryId, nameKeyword, urlKeyword, pageSize, pageNum);

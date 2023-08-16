@@ -11,7 +11,7 @@ spring:
     timeout: 3000ms # 连接超时时间（毫秒）
 
 minio:
-  endpoint: minio
+  endpoint: http://localhost:9090
   bucketName: project
   access-key: access
   secret-key: secret

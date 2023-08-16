@@ -78,7 +78,7 @@ public class UmsRoleController {
 
     @ApiOperation("根据ID修改状态")
     @PutMapping("/{id}/status")
-    public CommonResult<Object> updateStatus(@PathVariable Long id, @RequestParam(value = "status") Integer status) {
+    public CommonResult<Object> updateStatus(@PathVariable Long id, @RequestParam("status") Integer status) {
         boolean success = roleService.updateStatus(id, status);
         return success ? CommonResult.success() : CommonResult.failed();
     }
