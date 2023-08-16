@@ -157,7 +157,7 @@
                         <configuration>
                             <target>
                                 <copy todir="src/main/resources/docker"
-                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"></copy>
+                                      file="target/${project.artifactId}-${project.version}.${project.packaging}"/>
                             </target>
                         </configuration>
                         <goals>

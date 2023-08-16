@@ -1,5 +1,6 @@
 package com.project.modules.ums.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -12,20 +13,21 @@ import javax.validation.constraints.Size;
  * @author Qing2514
  */
 @Data
+@ApiModel(value = "修改密码参数", description = "UpdatePasswordParam")
 public class UpdatePasswordParam {
 
-    @NotEmpty
-    @ApiModelProperty(value = "用户名", required = true)
+    @NotEmpty(message = "用户名不能为空")
+    @ApiModelProperty("用户名")
     private String username;
 
-    @NotEmpty
+    @NotEmpty(message = "旧密码不能为空")
     @Size(min = 6, max = 16, message = "密码必须为6~16位")
-    @ApiModelProperty(value = "旧密码", required = true)
+    @ApiModelProperty("旧密码")
     private String oldPassword;
 
-    @NotEmpty
+    @NotEmpty(message = "新密码不能为空")
     @Size(min = 6, max = 16, message = "密码必须为6~16位")
-    @ApiModelProperty(value = "新密码", required = true)
+    @ApiModelProperty("新密码")
     private String newPassword;
 
 }

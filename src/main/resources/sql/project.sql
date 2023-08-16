@@ -219,7 +219,6 @@ CREATE TABLE `ums_role`
     `id`          bigint(20) NOT NULL AUTO_INCREMENT,
     `name`        varchar(100) DEFAULT NULL COMMENT '名称',
     `description` varchar(500) DEFAULT NULL COMMENT '描述',
-    `user_count`  int(11)      DEFAULT NULL COMMENT '后台用户数量',
     `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64)  DEFAULT NULL COMMENT '创建用户',
     `update_time` datetime     DEFAULT NULL COMMENT '修改时间',
@@ -235,9 +234,9 @@ CREATE TABLE `ums_role`
 -- Records of ums_role
 -- ----------------------------
 INSERT INTO `ums_role`
-VALUES (1, '系统管理员', '拥有所有权限', '0', '2023-07-21 16:54:35', '15312345678', null, null, 1, 0);
+VALUES (1, '系统管理员', '拥有所有权限', '2023-07-21 16:54:35', '15312345678', null, null, 1, 0);
 INSERT INTO `ums_role`
-VALUES (2, '普通用户', '个人信息管理权限', '0', '2023-07-21 16:54:35', '15312345678', null, null, 1, 0);
+VALUES (2, '普通用户', '个人信息管理权限', '2023-07-21 16:54:35', '15312345678', null, null, 1, 0);
 
 -- ----------------------------
 -- Table structure for ums_role_menu_relation
