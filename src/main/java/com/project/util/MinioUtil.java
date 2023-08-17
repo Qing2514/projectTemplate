@@ -1,13 +1,17 @@
 package com.project.util;
 
+import com.project.common.api.ResultCode;
+import com.project.common.exception.Asserts;
 import com.project.config.MinioConfig;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * MinIO 工具类
@@ -30,9 +34,13 @@ public class MinioUtil {
     public boolean bucketExists(String bucketName) {
         boolean found;
         try {
-            found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            found = minioClient.bucketExists(
+                    BucketExistsArgs.builder()
+                            .bucket(bucketName)
+                            .build()
+            );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("get bucket failed: {}", e.getMessage());
             return false;
         }
         return found;
@@ -46,9 +54,13 @@ public class MinioUtil {
             return false;
         }
         try {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            minioClient.makeBucket(
+                    MakeBucketArgs.builder()
+                            .bucket(bucketName)
+                            .build()
+            );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("create bucket failed: {}", e.getMessage());
             return false;
         }
         return true;
@@ -59,9 +71,31 @@ public class MinioUtil {
      */
     public boolean deleteBucket(String bucketName) {
         try {
-            minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
+            minioClient.removeBucket(
+                    RemoveBucketArgs.builder()
+                            .bucket(bucketName)
+                            .build()
+            );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("delete bucket failed: {}", e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 根据文件名查询文件是否存在
+     */
+    public boolean objectExists(String fileName) {
+        try {
+            minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(prop.getBucketName())
+                            .object(fileName)
+                            .build()
+            );
+        } catch (Exception e) {
+            log.error("file not exits: {}", e.getMessage());
             return false;
         }
         return true;
@@ -71,18 +105,20 @@ public class MinioUtil {
      * 根据文件名查询url
      */
     public String getObject(String fileName) {
+        String encryptedFileName = encryptFileName(fileName);
+        Asserts.isTrue(objectExists(encryptedFileName), ResultCode.FILE_NOT_EXISTS);
         // 查看文件地址
         GetPresignedObjectUrlArgs build = GetPresignedObjectUrlArgs.builder()
                 .bucket(prop.getBucketName())
-                .object(fileName)
+                .object(encryptedFileName)
                 .method(Method.GET)
                 .build();
         try {
             return minioClient.getPresignedObjectUrl(build);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("get object failed: {}", e.getMessage());
+            return null;
         }
-        return null;
     }
 
     /**
@@ -90,20 +126,19 @@ public class MinioUtil {
      */
     public String upload(MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
-        if (!StringUtils.hasLength(originalFilename)) {
-            throw new RuntimeException();
-        }
+        String encryptedFileName = encryptFileName(originalFilename);
+        Asserts.notTrue(objectExists(encryptedFileName), ResultCode.FILE_EXISTS);
         try {
             PutObjectArgs objectArgs = PutObjectArgs.builder()
                     .bucket(prop.getBucketName())
-                    .object(originalFilename)
+                    .object(encryptedFileName)
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build();
-            // 文件名称相同会覆盖
+            // 文件名相同时原文件会被覆盖
             minioClient.putObject(objectArgs);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("upload file error: {}", e.getMessage());
             return null;
         }
         return getObject(originalFilename);
@@ -113,15 +148,44 @@ public class MinioUtil {
      * 删除文件
      */
     public boolean deleteObject(String fileName) {
+        String encryptedFileName = encryptFileName(fileName);
+        Asserts.isTrue(objectExists(encryptedFileName), ResultCode.FILE_NOT_EXISTS);
         try {
-            minioClient.removeObject(RemoveObjectArgs.builder()
-                    .bucket(prop.getBucketName())
-                    .object(fileName)
-                    .build());
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(prop.getBucketName())
+                            .object(encryptedFileName)
+                            .build()
+            );
         } catch (Exception e) {
+            log.error("delete object failed: {}", e.getMessage());
             return false;
         }
         return true;
+    }
+
+    /**
+     * 使用MD5算法对文件名加密
+     */
+    private static String encryptFileName(String fileName) {
+        Asserts.notNull(fileName, ResultCode.FILENAME_NULL);
+        int index = fileName.lastIndexOf(".");
+        if (index == -1) {
+            Asserts.fail(ResultCode.FILE_NOT_EXISTS);
+        }
+        String fileType = fileName.substring(index);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(fileName.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString().concat(fileType);
+        } catch (NoSuchAlgorithmException e) {
+            log.error("encrypt file name failed: {}", e.getMessage());
+        }
+        return null;
     }
 
 }

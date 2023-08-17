@@ -33,9 +33,17 @@ public enum ResultCode implements IErrorCode {
     USER_NOT_EXISTS(2002, "用户不存在"),
     NOT_CURRENT_USER(2003, "非当前登录用户"),
 
+    /**
+     * 文件模块
+     */
+    FILENAME_NULL(3001, "文件名为空"),
+    FILE_EXISTS(3002, "文件已存在"),
+    FILE_NOT_EXISTS(3003, "文件不存在"),
+
     ;
 
     private final long code;
+
     private final String message;
 
     ResultCode(long code, String message) {

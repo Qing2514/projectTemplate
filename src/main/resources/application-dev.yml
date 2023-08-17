@@ -19,4 +19,4 @@ minio:
 logging:
   level:
     root: info
-    project: debug
+    com.project: debug

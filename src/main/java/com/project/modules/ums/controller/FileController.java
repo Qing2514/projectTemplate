@@ -44,7 +44,8 @@ public class FileController {
     @ApiOperation(value = "上传文件返回url")
     @PostMapping("/upload")
     public CommonResult<String> upload(MultipartFile file) {
-        return CommonResult.success(minioUtil.upload(file));
+        String url = minioUtil.upload(file);
+        return url != null ? CommonResult.success(url) : CommonResult.failed();
     }
 
     @ApiOperation(value = "删除文件")

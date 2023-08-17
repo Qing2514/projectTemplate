@@ -21,4 +21,4 @@ logging:
     path: /var/logs
   level:
     root: info
-    project: info
+    com.project: info

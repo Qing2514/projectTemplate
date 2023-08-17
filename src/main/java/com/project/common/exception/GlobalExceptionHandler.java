@@ -23,11 +23,24 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     /**
+     * 空指针异常
+     */
+    @ExceptionHandler(value = NullPointerException.class)
+    public CommonResult<Object> handle(NullPointerException e, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+        log.error("uri: {}, method: {}, NullPointerException: {}", uri, method, e.getMessage());
+        return CommonResult.failed(e.getMessage());
+    }
+
+    /**
      * 参数不合法异常
      */
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public CommonResult<Object> handle(IllegalArgumentException e) {
-        log.error(e.getMessage());
+    public CommonResult<Object> handle(IllegalArgumentException e, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+        log.error("uri: {}, method: {}, IllegalArgumentException: {}", uri, method, e.getMessage());
         return CommonResult.failed(e.getMessage());
     }
 
@@ -35,11 +48,24 @@ public class GlobalExceptionHandler {
      * 自定义校验异常
      */
     @ExceptionHandler(value = ApiException.class)
-    public CommonResult<Object> handle(ApiException e) {
-        log.error(e.getMessage());
+    public CommonResult<Object> handle(ApiException e, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+        log.error("uri: {}, method: {}, ApiException: {}", uri, method, e.getMessage());
         if (e.getErrorCode() != null) {
             return CommonResult.failed(e.getErrorCode());
         }
+        return CommonResult.failed(e.getMessage());
+    }
+
+    /**
+     * 系统异常
+     */
+    @ExceptionHandler(value = Exception.class)
+    public CommonResult<Object> handle(Exception e, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+        log.error("uri: {}, method: {}, Exception: {}", uri, method, e.getMessage());
         return CommonResult.failed(e.getMessage());
     }
 
@@ -49,7 +75,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public CommonResult<Object> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
         String uri = request.getRequestURI();
-        log.error("请求地址'{}', 权限校验失败'{}'", uri, e.getMessage());
+        String method = request.getMethod();
+        log.error("uri: {}, method: {}, AccessDeniedException: {}", uri, method, e.getMessage());
         return CommonResult.failed(ResultCode.FORBIDDEN);
     }
 

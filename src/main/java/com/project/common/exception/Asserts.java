@@ -47,6 +47,12 @@ public class Asserts extends Assert {
         }
     }
 
+    public static void notTrue(boolean expression, IErrorCode errorCode) {
+        if (expression) {
+            throw new ApiException(errorCode);
+        }
+    }
+
     public static void isTrue(boolean expression, IErrorCode errorCode) {
         if (!expression) {
             throw new ApiException(errorCode);
