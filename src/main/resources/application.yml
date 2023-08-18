@@ -30,12 +30,6 @@ mybatis-plus:
     auto-mapping-behavior: partial
     map-underscore-to-camel-case: true
 
-jwt:
-  tokenHeader: Authorization # JWT 存储的请求头
-  secret: project-user-secret # JWT 加解密使用的密钥
-  expiration: 604800 # JWT 的超期限时间 (60 * 60 * 24 * 7 = 1周)
-  tokenHead: 'Bearer ' # JWT 负载中拿到开头
-
 redis:
   database: project
   key:
@@ -43,6 +37,15 @@ redis:
     resourceList: 'ums:resourceList'
   expire:
     common: 86400 # 24小时
+
+jwt:
+  tokenHeader: Authorization # JWT 存储的请求头
+  secret: project-user-secret # JWT 加解密使用的密钥
+  expiration: 604800 # JWT 的超期限时间 (60 * 60 * 24 * 7 = 1周)
+  tokenHead: 'Bearer ' # JWT 负载中拿到开头
+
+sm4:
+  key: 1234567812345678 # key 必须为16位
 
 secure:
   ignored:
