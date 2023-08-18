@@ -22,7 +22,7 @@ SET
 DROP TABLE IF EXISTS `ums_user`;
 CREATE TABLE `ums_user`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
     `username`    varchar(64)  DEFAULT NULL COMMENT '用户名',
     `password`    varchar(64)  DEFAULT NULL COMMENT '密码',
     `icon`        varchar(500) DEFAULT NULL COMMENT '头像',
@@ -60,8 +60,8 @@ VALUES (2, '15123123123', '$2a$10$xsqXIPrRd0GVk76Yf9XH9OyNWy30LH4cqFS4xl0vgB0coE
 DROP TABLE IF EXISTS `ums_user_login_log`;
 CREATE TABLE `ums_user_login_log`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `user_id`     bigint(20)   DEFAULT NULL COMMENT '用户ID',
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `user_id`     bigint(19)   DEFAULT NULL COMMENT '用户ID',
     `ip`          varchar(64)  DEFAULT NULL COMMENT '登陆地IP',
     `address`     varchar(100) DEFAULT NULL COMMENT '登录地址',
     `user_agent`  varchar(200) DEFAULT NULL COMMENT '浏览器登录类型',
@@ -89,9 +89,9 @@ VALUES (1, 1, '0:0:0:0:0:0:0:1', null,
 DROP TABLE IF EXISTS `ums_user_role_relation`;
 CREATE TABLE `ums_user_role_relation`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `user_id`     bigint(20)  DEFAULT NULL,
-    `role_id`     bigint(20)  DEFAULT NULL,
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `user_id`     bigint(19)  DEFAULT NULL,
+    `role_id`     bigint(19)  DEFAULT NULL,
     `create_time` datetime    DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64) DEFAULT NULL COMMENT '创建用户',
     `update_time` datetime    DEFAULT NULL COMMENT '修改时间',
@@ -116,8 +116,8 @@ VALUES (2, 2, 2, '2023-07-21 16:54:35', '15312345678', null, null, 0);
 DROP TABLE IF EXISTS `ums_menu`;
 CREATE TABLE `ums_menu`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `parent_id`   bigint(20)   DEFAULT NULL COMMENT '父级ID',
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `parent_id`   bigint(19)   DEFAULT NULL COMMENT '父级ID',
     `title`       varchar(100) DEFAULT NULL COMMENT '菜单名称',
     `level`       int(4)       DEFAULT NULL COMMENT '菜单级数',
     `name`        varchar(100) DEFAULT NULL COMMENT '前端名称',
@@ -155,11 +155,11 @@ VALUES (6, 1, '个人信息', '1', 'user', 'ums-user', '0', '2023-07-21 16:54:35
 DROP TABLE IF EXISTS `ums_resource`;
 CREATE TABLE `ums_resource`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
     `name`        varchar(200) DEFAULT NULL COMMENT '资源名称',
     `url`         varchar(200) DEFAULT NULL COMMENT '资源URL',
     `description` varchar(500) DEFAULT NULL COMMENT '描述',
-    `category_id` bigint(20)   DEFAULT NULL COMMENT '资源分类ID',
+    `category_id` bigint(19)   DEFAULT NULL COMMENT '资源分类ID',
     `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64)  DEFAULT NULL COMMENT '创建用户',
     `update_time` datetime     DEFAULT NULL COMMENT '修改时间',
@@ -192,7 +192,7 @@ VALUES (6, '个人信息管理', '/user/**', null, 1, '2023-07-21 16:54:35', '15
 DROP TABLE IF EXISTS `ums_resource_category`;
 CREATE TABLE `ums_resource_category`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
     `name`        varchar(200) DEFAULT NULL COMMENT '分类名称',
     `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64)  DEFAULT NULL COMMENT '创建用户',
@@ -216,7 +216,7 @@ VALUES (1, '权限模块', '2023-07-21 16:54:35', '15312345678', null, null, 0);
 DROP TABLE IF EXISTS `ums_role`;
 CREATE TABLE `ums_role`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
     `name`        varchar(100) DEFAULT NULL COMMENT '名称',
     `description` varchar(500) DEFAULT NULL COMMENT '描述',
     `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
@@ -244,9 +244,9 @@ VALUES (2, '普通用户', '个人信息管理权限', '2023-07-21 16:54:35', '1
 DROP TABLE IF EXISTS `ums_role_menu_relation`;
 CREATE TABLE `ums_role_menu_relation`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `role_id`     bigint(20)  DEFAULT NULL COMMENT '角色ID',
-    `menu_id`     bigint(20)  DEFAULT NULL COMMENT '菜单ID',
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `role_id`     bigint(19)  DEFAULT NULL COMMENT '角色ID',
+    `menu_id`     bigint(19)  DEFAULT NULL COMMENT '菜单ID',
     `create_time` datetime    DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64) DEFAULT NULL COMMENT '创建用户',
     `update_time` datetime    DEFAULT NULL COMMENT '修改时间',
@@ -281,9 +281,9 @@ VALUES (7, 2, 6, '2023-07-21 16:54:35', '15312345678', null, null, 0);
 DROP TABLE IF EXISTS `ums_role_resource_relation`;
 CREATE TABLE `ums_role_resource_relation`
 (
-    `id`          bigint(20) NOT NULL AUTO_INCREMENT,
-    `role_id`     bigint(20)  DEFAULT NULL COMMENT '角色ID',
-    `resource_id` bigint(20)  DEFAULT NULL COMMENT '资源ID',
+    `id`          bigint(19) NOT NULL AUTO_INCREMENT,
+    `role_id`     bigint(19)  DEFAULT NULL COMMENT '角色ID',
+    `resource_id` bigint(19)  DEFAULT NULL COMMENT '资源ID',
     `create_time` datetime    DEFAULT NULL COMMENT '创建时间',
     `create_by`   varchar(64) DEFAULT NULL COMMENT '创建用户',
     `update_time` datetime    DEFAULT NULL COMMENT '修改时间',

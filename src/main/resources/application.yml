@@ -10,8 +10,9 @@ spring:
       max-request-size: 500MB
   profiles:
     active: @profile.active@
-#  main:
-#    allow-circular-references: true
+  main:
+    banner-mode: off # 关闭 springboot banner (横幅、图标)
+#    allow-circular-references: true # 允许循环引用其他类
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -24,15 +25,16 @@ mybatis-plus:
       logic-delete-field: deleted # 全局逻辑删除的实体字段名
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+    banner: off # 关闭 mybatis-plus 横幅（图标）
   configuration:
     auto-mapping-behavior: partial
     map-underscore-to-camel-case: true
 
 jwt:
-  tokenHeader: Authorization #JWT存储的请求头
-  secret: project-user-secret #JWT加解密使用的密钥
-  expiration: 604800 #JWT的超期限时间(60*60*24*7)
-  tokenHead: 'Bearer '  #JWT负载中拿到开头
+  tokenHeader: Authorization # JWT 存储的请求头
+  secret: project-user-secret # JWT 加解密使用的密钥
+  expiration: 604800 # JWT 的超期限时间 (60 * 60 * 24 * 7 = 1周)
+  tokenHead: 'Bearer ' # JWT 负载中拿到开头
 
 redis:
   database: project
@@ -44,7 +46,7 @@ redis:
 
 secure:
   ignored:
-    urls: #安全路径白名单
+    urls: # 安全路径白名单
       - /swagger-ui/
       - /swagger-resources/**
       - /**/v2/api-docs
