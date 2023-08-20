@@ -22,7 +22,7 @@
         <mysql-connector.version>8.0.29</mysql-connector.version>
         <jjwt.version>0.9.1</jjwt.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
-        <springfox-swagger.version>3.0.0</springfox-swagger.version>
+        <knife4j.version>3.0.3</knife4j.version>
         <velocity.version>2.3</velocity.version>
     </properties>
 
@@ -68,11 +68,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector.version}</version>
         </dependency>
-        <!--Swagger-UI API 文档生产工具-->
+        <!--Knife4j 依赖配置-->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>${springfox-swagger.version}</version>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
         <!--redis 依赖配置-->
         <dependency>

@@ -44,6 +44,18 @@ jwt:
   expiration: 604800 # JWT 的超期限时间 (60 * 60 * 24 * 7 = 1周)
   tokenHead: 'Bearer ' # JWT 负载中拿到开头
 
+knife4j:
+  enableSecurity: true  # 开启登录认证
+  enableKnife4j: true  # 开启增强功能
+  basePackage: com.project.modules # 基础扫描包范围
+  serviceUrl: http://localhost:80/doc.html  # 服务器接口文档访问地址
+  title: project 项目接口文档  # 接口文档标题
+  description: 接口文档查看和接口调试  # 接口文档描述
+  version: v1.0  # 接口文档版本
+  contactName: Qing2514 # 联系人
+  contactUrl: http://localhost:80 # 联系人网站
+  emacontactEmailil: 2514632453@qq.com # 联系人邮箱
+
 sm4:
   key: 1234567812345678 # key 必须为16位
 
