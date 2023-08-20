@@ -56,8 +56,12 @@ knife4j:
   contactUrl: http://localhost:80 # 联系人网站
   emacontactEmailil: 2514632453@qq.com # 联系人邮箱
 
+sm2:
+  privateKey: 64c9a9aacfcd1b9003b70c822985c003453ec9cfbcad607d8bd8109a5139bec0 # 64位私钥
+  publicKey: 0207f8846e407e92ade01da0d9a81f472b5d380686776459b0c9b34adae9b240d1 # 66位公钥，前两位为标记
+
 sm4:
-  key: 1234567812345678 # key 必须为16位
+  key: 1234567812345678 # 16位秘钥
 
 secure:
   ignored:
