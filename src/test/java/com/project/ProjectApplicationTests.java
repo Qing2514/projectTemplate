@@ -8,7 +8,6 @@ import cn.hutool.crypto.SmUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.SM2;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
-import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +24,7 @@ public class ProjectApplicationTests {
     @Value("${sm4.key}")
     private String key;
 
-    String text = "123456789123456789";
+    String text = "123456";
 
     @Test
     public void sm2GenerateKey() {
@@ -40,11 +39,6 @@ public class ProjectApplicationTests {
         String publicKeyEcString = HexUtil.encodeHexStr(publicKeyEc);
         System.out.println("公钥: " + publicKeyEcString);
         System.out.println("公钥位数：" + publicKeyEcString.length());
-        // 生成130位公钥
-        byte[] publicKey = ((BCECPublicKey)sm2.getPublicKey()).getQ().getEncoded(false);
-        String publicKeyString = HexUtil.encodeHexStr(publicKey);
-        System.out.println("未压缩公钥: " + publicKeyString);
-        System.out.println("未压缩公钥位数：" + publicKeyString.length());
     }
 
     @Test
