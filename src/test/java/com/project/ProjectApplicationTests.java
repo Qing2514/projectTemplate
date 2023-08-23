@@ -28,10 +28,6 @@ public class ProjectApplicationTests {
     String text = "123456789123456789";
 
     @Test
-    public void test() {
-    }
-
-    @Test
     public void sm2GenerateKey() {
         SM2 sm2 = SmUtil.sm2();
         // 生成私钥
@@ -60,12 +56,19 @@ public class ProjectApplicationTests {
         System.out.println("公钥位数：" + publicKey.length());
         // 公钥加密
         String encryptStr = sm2.encryptBcd(text, KeyType.PublicKey);
-        System.out.println("公钥加密：" + encryptStr);
-        System.out.println("加密后位数：" + encryptStr.length());
+        System.out.println("公钥加密结果：" + encryptStr);
+        System.out.println("加密结果位数：" + encryptStr.length());
         // 私钥解密
         String decryptStr = StrUtil.utf8Str(sm2.decryptFromBcd(encryptStr, KeyType.PrivateKey));
-        System.out.println("私钥解密：" + decryptStr);
-        System.out.println("解密后位数：" + decryptStr.length());
+        System.out.println("私钥解密结果：" + decryptStr);
+        System.out.println("解密结果位数：" + decryptStr.length());
+    }
+
+
+    @Test
+    public void sm3Test() {
+        String digestHex = SmUtil.sm3(text);
+        System.out.println("加密结果：" + digestHex);
     }
 
     @Test
@@ -76,11 +79,11 @@ public class ProjectApplicationTests {
         // 加密
         String ciphertext = sm4.encryptHex(text);
         System.out.println("加密结果: " + ciphertext);
-        System.out.println("加密后位数：" + ciphertext.length());
+        System.out.println("加密结果位数：" + ciphertext.length());
         // 解密
         String decryptStr = sm4.decryptStr(ciphertext, CharsetUtil.CHARSET_UTF_8);
         System.out.println("解密结果: " + decryptStr);
-        System.out.println("解密后位数：" + decryptStr.length());
+        System.out.println("解密结果位数：" + decryptStr.length());
     }
 
 }

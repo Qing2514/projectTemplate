@@ -54,7 +54,7 @@ knife4j:
   version: v1.0  # 接口文档版本
   contactName: Qing2514 # 联系人
   contactUrl: http://localhost:80 # 联系人网站
-  emacontactEmailil: 2514632453@qq.com # 联系人邮箱
+  contactEmail: 2514632453@qq.com # 联系人邮箱
 
 sm2:
   privateKey: 64c9a9aacfcd1b9003b70c822985c003453ec9cfbcad607d8bd8109a5139bec0 # 64位私钥
