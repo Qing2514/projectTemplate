@@ -1,7 +1,8 @@
 package com.project.modules.ums.mapper;
 
-import com.project.modules.ums.model.UmsResource;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.project.modules.ums.model.UmsResource;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @author Qing2514
  */
+@Mapper
 public interface UmsResourceMapper extends BaseMapper<UmsResource> {
 
     /**

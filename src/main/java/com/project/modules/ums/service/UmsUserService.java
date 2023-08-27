@@ -118,7 +118,7 @@ public interface UmsUserService extends IService<UmsUser> {
      * @param roleIds 角色ID列表
      * @return 成功标志
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     int addRole(Long userId, List<Long> roleIds);
 
     /**

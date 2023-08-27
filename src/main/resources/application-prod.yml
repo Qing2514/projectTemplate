@@ -5,22 +5,22 @@ spring:
       url: jdbc:mysql://localhost:3306/project?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
       username: root
       password: root
-  redis:
-    host: redis # Redis 服务器地址
-    database: 0 # Redis 数据库索引（默认为0）
-    port: 6379 # Redis 服务器连接端口
-    password:  # Redis 服务器连接密码（默认为空）
+  redis: # 配置 Redis
+    host: localhost # 服务器地址
+    database: 0 # 数据库索引（默认为0）
+    port: 6379 # 端口号
+    password: # 密码（默认为空）
     timeout: 3000ms # 连接超时时间（毫秒）
 
-minio:
-  endpoint: http://localhost:9090
-  bucketName: project
-  access-key: access
-  secret-key: secret
+minio: # 配置 MinIO
+  endpoint: http://localhost:9090 # 服务器地址，需加上 http://
+  bucketName: project # 桶名称
+  access-key: access # 账号
+  secret-key: secret # 密码
 
 logging:
   file:
-    path: /var/logs
-  level:
+    path: /var/logs # 日志输出地址
+  level: # 日志输出等级
     root: info
     com.project: info

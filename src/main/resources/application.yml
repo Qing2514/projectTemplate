@@ -3,32 +3,32 @@ server:
 
 spring:
   application:
-    name: project
+    name: SpringBootTemplate
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 500MB
+      max-file-size: 50MB # 限制上传的单个文件的大小
+      max-request-size: 500MB # 限制单次请求的文件的总大小
   profiles:
     active: @profile.active@
   main:
-    banner-mode: off # 关闭 springboot banner (横幅、图标)
-#    allow-circular-references: true # 允许循环引用其他类
+    banner-mode: off # 关闭启动项目时的 springboot 图标
+    allow-circular-references: true # 允许循环引用其他类
   mvc:
     pathmatch:
-      matching-strategy: ant_path_matcher
+      matching-strategy: ant_path_matcher # 支持 Ant 风格的路径匹配
 
 mybatis-plus:
-  mapper-locations: classpath:/mapper/**/*.xml
+  mapper-locations: classpath:/mapper/**/*.xml # mapper 的 xml 文件路径
   global-config:
     db-config:
-      id-type: auto
+      id-type: assign_id # 雪花算法生成 id
       logic-delete-field: deleted # 全局逻辑删除的实体字段名
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-    banner: off # 关闭 mybatis-plus 横幅（图标）
+    banner: off # 关闭启动项目时的 mybatis-plus 图标
   configuration:
-    auto-mapping-behavior: partial
-    map-underscore-to-camel-case: true
+    auto-mapping-behavior: partial # 开启结果集自动映射
+    map-underscore-to-camel-case: true # 开启驼峰映射
 
 redis:
   database: project
@@ -54,7 +54,7 @@ knife4j:
   version: v1.0  # 接口文档版本
   contactName: Qing2514 # 联系人
   contactUrl: http://localhost:80 # 联系人网站
-  contactEmail: 2514632453@qq.com # 联系人邮箱
+  contactEmail: admin@163.com # 联系人邮箱
 
 sm2:
   privateKey: 64c9a9aacfcd1b9003b70c822985c003453ec9cfbcad607d8bd8109a5139bec0 # 64位私钥

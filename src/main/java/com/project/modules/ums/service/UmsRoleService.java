@@ -39,7 +39,7 @@ public interface UmsRoleService extends IService<UmsRole> {
      * @param menuIds 菜单ID列表
      * @return 成功标志
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     int addMenu(Long roleId, List<Long> menuIds);
 
     /**
@@ -49,7 +49,7 @@ public interface UmsRoleService extends IService<UmsRole> {
      * @param resourceIds 资源ID列表
      * @return 成功标志
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     int addResource(Long roleId, List<Long> resourceIds);
 
     /**

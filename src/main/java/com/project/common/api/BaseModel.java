@@ -1,7 +1,6 @@
 package com.project.common.api;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -23,7 +22,7 @@ public class BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableId("id")
     private Long id;
 
     @TableField(fill = FieldFill.INSERT)
